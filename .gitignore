@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/Alg_ListExtract/build/
+/Alg_ListExtract/dist/
