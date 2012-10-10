@@ -4,6 +4,7 @@
  */
 package alg_listextract;
 
+import html_tables.HTML_Tables_Generator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +29,8 @@ public class ListExtract {
 
     public ArrayList listSubSequen;
     public ArrayList numColum;
-
+    HTML_Tables_Generator htmltg;
+    
     public ListExtract() {
 
         listSubSequen = new ArrayList<>();
@@ -39,16 +41,17 @@ public class ListExtract {
         listSubSequen.add("4. Duck Dodgers in the 24 1/2th Century (Warnner Bross/1953)");
         listSubSequen.add("5. One Froggy Evening (Waner Bros/1956)");
         listSubSequen.add("6. Gertie The Dinossaur (McCay)");
-        listSubSequen.add("7. Red Hot Riding Hood (MGM/1938");
+        listSubSequen.add("7. Red Hot Riding Hood (MGM/1943");
         listSubSequen.add("8. Porky In Wackyland (Waner Bros/1938)");
         listSubSequen.add("9. Gerald McBoing Boing (UPA/1951)");
         listSubSequen.add("10. King-Size Canary (MGM/1947)");
         listSubSequen.add("11. Three Little Pigs (Disney/1933)");
         listSubSequen.add("12. Rabbit of Seville (Waner Bros/1950)");
-        listSubSequen.add("13. Steamboat Willie (Disney/1937)");
-        listSubSequen.add("14. Bad Luck Blackie (MGM/1949)");
-        listSubSequen.add("15. The Great Piggy Bank Robbery (Waner Bros/1949)");
-        listSubSequen.add("16. Popeye the Sailor Meets Sindbad the Sailor (Fleischer/1936)");
+        listSubSequen.add("13. Steamboat Willie (Disney/1928)");
+        listSubSequen.add("14. The Old Will (Disney/1937)");
+        listSubSequen.add("15. Bad Luck Blackie (MGM/1949)");
+        listSubSequen.add("16. The Great Piggy Bank Robbery (Waner Bros/1946)");
+        listSubSequen.add("17. Popeye the Sailor Meets Sindbad the Sailor (Fleischer/1936)");
 
         numColum = new ArrayList();
     }
@@ -87,24 +90,29 @@ public class ListExtract {
             int idealNumColumns = computeIdealNumColumns(numColum);
 
             System.out.println("Ideal Columns " + idealNumColumns);
-
+            
+            htmltg = new HTML_Tables_Generator(idealNumColumns, "nomeTeste.html");
+            
             for (int j = 0; j < rowsCadidates.size(); j++) {
 
                 System.out.println("**********************************************************");
                 ArrayList<FieldCandidate> selectedCandidates = rowsCadidates.get(j);
-                System.out.println("Num Candidatos: " + selectedCandidates.size());
+           //     System.out.println("Num Candidatos: " + selectedCandidates.size());
 
                 if (selectedCandidates.size() > idealNumColumns) {
 
-                    System.out.println(">>> Necessitar ser Recalculado <<<");
+                    System.out.println(">>> Linha recalculada <<<");
                     ArrayList<FieldCandidate> newSelectedCandidates = split_line(rowsFQS.get(j), 0, idealNumColumns);
                     rowsCadidates.set(j, newSelectedCandidates);
                     outputCandidates(newSelectedCandidates);
+                    
                 } else {
 
                     outputCandidates(selectedCandidates);
                 }
             }
+            
+            htmltg.geraTabela();
         } catch (Exception error) {
 
             error.printStackTrace();
@@ -198,16 +206,22 @@ public class ListExtract {
     private void outputCandidates(ArrayList<FieldCandidate> selectedCandidates) {
 
         try {
-
+            
+            ArrayList arrayTeste = new ArrayList<>();
+            
             FieldCandidateStartComparator sPosition = new FieldCandidateStartComparator();
 
             Collections.sort(selectedCandidates, sPosition);
-
+            
             for (int x = 0; x < selectedCandidates.size(); x++) {
-
-                System.out.println(selectedCandidates.get(x));
+                arrayTeste.add(selectedCandidates.get(x).getField());
+                System.out.print(selectedCandidates.get(x).getField() +" | ");
             }
-
+            
+            System.out.println("");
+            
+            htmltg.addingLineInTable(arrayTeste);
+            arrayTeste.clear();
         } catch (Exception error) {
 
             error.printStackTrace();
@@ -296,7 +310,7 @@ public class ListExtract {
 
         try {
 
-            HashMap<Integer, Integer> mapColumOccurren = new HashMap<>();
+            HashMap<Integer, Integer> mapColumnOccurrence = new HashMap<>();
             ArrayList<Integer> listNumColumns = arrayNcolum;
 //            ArrayList arrayLongRecords = new ArrayList();
 
@@ -304,24 +318,24 @@ public class ListExtract {
 
             for (Integer integer : listNumColumns) {
 
-                if (mapColumOccurren.containsKey(integer)) {
+                if (mapColumnOccurrence.containsKey(integer)) {
 
-                    mapColumOccurren.put(integer, mapColumOccurren.get(integer) + 1);
+                    mapColumnOccurrence.put(integer, mapColumnOccurrence.get(integer) + 1);
 
                 } else {
-                    mapColumOccurren.put(integer, 1);
+                    mapColumnOccurrence.put(integer, 1);
                 }
             }
 //        System.out.println("HashMap par Key(numColum) >> Value(numOcorrências): " + mapColumOccurren);
 
             Collection<Integer> valuesOfHMap;
 
-            valuesOfHMap = mapColumOccurren.values();
+            valuesOfHMap = mapColumnOccurrence.values();
             Integer highOccurrences = Collections.max(valuesOfHMap);
 
 //        System.out.println("Value: " + highOccurrences);
 
-            for (Entry<Integer, Integer> entry : mapColumOccurren.entrySet()) {
+            for (Entry<Integer, Integer> entry : mapColumnOccurrence.entrySet()) {
                 if (highOccurrences.equals(entry.getValue())) {
 
                     idealNumColumns = entry.getKey();
