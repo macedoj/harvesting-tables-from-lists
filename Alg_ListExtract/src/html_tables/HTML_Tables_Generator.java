@@ -38,15 +38,15 @@ public class HTML_Tables_Generator {
            // System.out.println("Teste: "+ (j) + " | " + arrayLines.get(j)); 
         }
         
-        line += "</tr> </ br>";
+        line += "</tr> \n";
       //  System.out.println(line);       
     }
     
     public void geraTabela(){
         
-        String cabecalho = "<!DOCTYPE HTML PUBLIC "+"-//W3C//DTD HTML 4.01//EN"+ "http://www.w3.org/TR/html4/strict.dtd"+">" + "</ br>" 
-                + "<html lang="+"pt-br"+">" + "</ br>" + "<head>" + "</ br>" + " <meta http-equiv="+"content-type"+" content="+"text/html; charset=utf-8"+">"
-                + "</ br>" + "</head>" + "<body>" + "</ br>" + "<div id="+"tabela>"+"<table border="+"1"+">";
+        String cabecalho = "<!DOCTYPE HTML PUBLIC "+"-//W3C//DTD HTML 4.01//EN"+ "http://www.w3.org/TR/html4/strict.dtd"+">"  
+                + "<html lang="+"pt-br"+">" + "<head>" + " <meta http-equiv="+"content-type"+" content="+"text/html; charset=utf-8"+">"
+                + "</head>" + "<body>" + "<div id="+"tabela>"+"<table border="+"1"+">";
         String fim = "</table> </div> </body> </html>";
      
        newOutFile(nameFile, cabecalho, fim);
@@ -56,10 +56,10 @@ public class HTML_Tables_Generator {
     /**
      * Método responsável por criar um novo arquivo(arquivo de saída) para
      * armazenar os dados filtrados do arquivo original.
-     * 
+     *
      * @param nameOutFile Nome do arquivo que esta sendo manipulado
      * @param cabecalho
-     * @param fimPage 
+     * @param fimPage
      */
     public void newOutFile(String nameOutFile, String cabecalho, String fimPage) {
 
@@ -93,7 +93,7 @@ public class HTML_Tables_Generator {
 
     /**
      * Método responsável por gravar os dados filtrados no arquivo de saída.
-     * 
+     *
      * @param nameOutFile Nome do arquivo que esta sendo manipulado
      * @param cabecalho cabecalho html
      * @param fimPage fim da estruturação html da página
@@ -126,6 +126,4 @@ public class HTML_Tables_Generator {
 
         }
     }
-    
-    
 }
