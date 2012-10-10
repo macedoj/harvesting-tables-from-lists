@@ -4,12 +4,8 @@
  */
 package html_tables;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import file_handler.FileHandler;
+import java.util.ArrayList;
 
 /**
  * This class is generator html tables.
