@@ -8,14 +8,14 @@ import java.io.*;
 
 /**
  * This class is responsible for handle all the files in the project
- * 
+ *
  * Classe responsável por realizar toda a manipulação de arquivos e diretórios.
  *
  * @since 10/05/2012 - Last change: 09/10/2012
  * @version 0.2
  * @author Juliano R. Macedo
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
- * 
+ *
  */
 public class FileHandler {
 
@@ -27,7 +27,6 @@ public class FileHandler {
     String directory = "files\\lists\\";
 
     public FileHandler() {
-
 //        patternFinder = new BetterAndTolerantPatternFinder(token);
     }
 
@@ -110,8 +109,7 @@ public class FileHandler {
                      * do arquivo, o retorno do método é armazenado na váriavel
                      * lineNormalized.
                      */
-                 //   lineNormalized = (filter.stringNormalize(lineFile));
-                    
+                    //   lineNormalized = (filter.stringNormalize(lineFile));
                 }
                 // Closes the file.
                 readFile.close();
@@ -128,6 +126,84 @@ public class FileHandler {
         } catch (Exception otherError) {
 
             System.out.println("Other Exception: " + otherError);
+        }
+    }
+
+//================================ Out Files =============================
+    /**
+     * Método responsável por criar um novo arquivo(arquivo de saída) para
+     * armazenar os dados filtrados do arquivo original.
+     *
+     * @param nameOutFile Nome do arquivo que esta sendo manipulado, esta
+     * informação é necessária para nomear o arquivo de saída.
+     */
+    public void newOutFile(String nameOutFile) {
+
+        String nameNewFile = "";
+
+        try {
+
+            // Cria um novo arquivo no diretório de saída especificado.
+            File file = new File("files\\outLists", "OUT_" + nameOutFile + "");
+            file.createNewFile();
+
+            // Recupera o nome do arquivo criado.
+            nameNewFile = file.getName();
+
+            // System.out.println("Name out file: " + nameNewFile + "\n");
+
+        } catch (IOException IOerror) {
+
+            System.out.println("I/O ERROR: " + IOerror);
+
+        } catch (Exception otherError) {
+
+            System.out.println("Other Exception: " + otherError);
+
+        }
+
+        // Chama o método que escreve a estrutura já filtrada no arquivo txt de saída.
+        writeOutFile(nameNewFile);
+    }
+
+    /**
+     * Método responsável por gravar os dados filtrados no arquivo de saída.
+     *
+     * @param nameOutFile Nome do arquivo, informação necessária para
+     * identificar em qual arquivo de saíde deseja-se gravar os dados filtrados
+     * no memento.
+     */
+    @SuppressWarnings({"ConvertToTryWithResources"})
+    public void writeOutFile(String nameOutFile) {
+
+        try {
+
+            FileWriter fstream = new FileWriter("files\\outLists\\" + nameOutFile + "");
+
+            BufferedWriter out = new BufferedWriter(fstream);
+
+            // Grava a estrutura filtrada no arquivo de saída.
+            out.write(charStructure);
+            // Limpa a variavel charStructure para ser utilizada no próximo arquivo.
+            charStructure = "";
+            // Cria uma nova liha no arquivo
+            out.newLine();
+            // Grava o score de estruturação no arquivo de saída.
+            out.write(scoreStructure);
+            // Limpa a variavel scoreStructure para ser utilizada no próximo arquivo.
+            scoreStructure = "";
+
+            // Closes the file.
+            out.close();
+
+        } catch (IOException IOerror) {
+
+            System.out.println("I/O ERROR: " + IOerror);
+
+        } catch (Exception otherError) {
+
+            System.out.println("Other Exception: " + otherError);
+
         }
     }
 }
