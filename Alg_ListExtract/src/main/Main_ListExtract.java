@@ -5,6 +5,7 @@
 package main;
 
 import alg_listextract.ListExtract;
+import file_handler.FileHandler;
 
 /**
  * This is a Main Class...
@@ -13,7 +14,7 @@ import alg_listextract.ListExtract;
  * @version 0.1
  * @author Juliano R. Macedo
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
- * 
+ *
  */
 public class Main_ListExtract {
 
@@ -24,8 +25,17 @@ public class Main_ListExtract {
      */
     public static void main(String args[]) {
 
-        ListExtract objectSL = new ListExtract();
+        try {
 
-        objectSL.split_Lines();
+            //ListExtract objectSL = new ListExtract();
+            FileHandler fileHandler = new FileHandler();
+            fileHandler.listFileInDirectory();
+
+           // objectSL.split_Lines();
+
+        } catch (Exception error) {
+
+            System.out.println(" Exception: " + error);
+        }
     }
 }

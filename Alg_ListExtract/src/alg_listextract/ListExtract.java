@@ -13,11 +13,12 @@ import java.util.Map.Entry;
 
 /**
  * This class is responsible for construction the engine of the extraction
- * 
+ *
  * Algoritmo para separar as possíveis conlunas da tabla. Faz parte do conjunto
  * de algoritmos do artigo "Harvesting Relational Tables from Lists on the Web"
  *
- * Os algoritmos do ListExtract descritos aqui, estão a partir da página 04 do artigo.
+ * Os algoritmos do ListExtract descritos aqui, estão a partir da página 04 do
+ * artigo.
  *
  * @since 15/07/2012 - Last change: 29/09/2012
  * @version 0.1
@@ -27,33 +28,28 @@ import java.util.Map.Entry;
  */
 public class ListExtract {
 
-    public ArrayList listSubSequen;
-    public ArrayList numColum;
-    HTML_Tables_Generator htmltg;
+     HTML_Tables_Generator htmltg;
     
     public ListExtract() {
-
-        listSubSequen = new ArrayList<>();
-
-        listSubSequen.add("1. What's Opera Doc (Waner Bros/1975)");
-        listSubSequen.add("2. Duck Amuck (Waner Bros/1953)");
-        listSubSequen.add("3. The Band Concert (Disney/1935)");
-        listSubSequen.add("4. Duck Dodgers in the 24 1/2th Century (Warnner Bross/1953)");
-        listSubSequen.add("5. One Froggy Evening (Waner Bros/1956)");
-        listSubSequen.add("6. Gertie The Dinossaur (McCay)");
-        listSubSequen.add("7. Red Hot Riding Hood (MGM/1943");
-        listSubSequen.add("8. Porky In Wackyland (Waner Bros/1938)");
-        listSubSequen.add("9. Gerald McBoing Boing (UPA/1951)");
-        listSubSequen.add("10. King-Size Canary (MGM/1947)");
-        listSubSequen.add("11. Three Little Pigs (Disney/1933)");
-        listSubSequen.add("12. Rabbit of Seville (Waner Bros/1950)");
-        listSubSequen.add("13. Steamboat Willie (Disney/1928)");
-        listSubSequen.add("14. The Old Will (Disney/1937)");
-        listSubSequen.add("15. Bad Luck Blackie (MGM/1949)");
-        listSubSequen.add("16. The Great Piggy Bank Robbery (Waner Bros/1946)");
-        listSubSequen.add("17. Popeye the Sailor Meets Sindbad the Sailor (Fleischer/1936)");
-
-        numColum = new ArrayList();
+//        listSubSequen = new ArrayList<>();
+//
+//        listSubSequen.add("1. What's Opera Doc (Waner Bros/1975)");
+//        listSubSequen.add("2. Duck Amuck (Waner Bros/1953)");
+//        listSubSequen.add("3. The Band Concert (Disney/1935)");
+//        listSubSequen.add("4. Duck Dodgers in the 24 1/2th Century (Warnner Bross/1953)");
+//        listSubSequen.add("5. One Froggy Evening (Waner Bros/1956)");
+//        listSubSequen.add("6. Gertie The Dinossaur (McCay)");
+//        listSubSequen.add("7. Red Hot Riding Hood (MGM/1943");
+//        listSubSequen.add("8. Porky In Wackyland (Waner Bros/1938)");
+//        listSubSequen.add("9. Gerald McBoing Boing (UPA/1951)");
+//        listSubSequen.add("10. King-Size Canary (MGM/1947)");
+//        listSubSequen.add("11. Three Little Pigs (Disney/1933)");
+//        listSubSequen.add("12. Rabbit of Seville (Waner Bros/1950)");
+//        listSubSequen.add("13. Steamboat Willie (Disney/1928)");
+//        listSubSequen.add("14. The Old Will (Disney/1937)");
+//        listSubSequen.add("15. Bad Luck Blackie (MGM/1949)");
+//        listSubSequen.add("16. The Great Piggy Bank Robbery (Waner Bros/1946)");
+//        listSubSequen.add("17. Popeye the Sailor Meets Sindbad the Sailor (Fleischer/1936)");
     }
 
     /**
@@ -67,9 +63,14 @@ public class ListExtract {
      *
      */
     @SuppressWarnings("CallToThreadDumpStack")
-    public void split_Lines() {
+    public void split_Lines(String nameFile, ArrayList listSubSequen) {
+
 
         try {
+
+            ArrayList numColum;
+            numColum = new ArrayList();
+
             ArrayList<ArrayList<FieldCandidate>> rowsFQS = new ArrayList<>();
 
             ArrayList<ArrayList<FieldCandidate>> rowsCadidates = new ArrayList<>();
@@ -84,20 +85,19 @@ public class ListExtract {
                 ArrayList<FieldCandidate> selectedCandidates = split_line(rowsFQS.get(j), 0, Integer.MAX_VALUE);
                 rowsCadidates.add(selectedCandidates);
                 numColum.add(selectedCandidates.size());
-
             }
 
             int idealNumColumns = computeIdealNumColumns(numColum);
 
             System.out.println("Ideal Columns " + idealNumColumns);
-            
-            htmltg = new HTML_Tables_Generator(idealNumColumns, "nomeTeste.html");
-            
+
+            htmltg = new HTML_Tables_Generator(idealNumColumns, nameFile);
+
             for (int j = 0; j < rowsCadidates.size(); j++) {
 
                 System.out.println("**********************************************************");
                 ArrayList<FieldCandidate> selectedCandidates = rowsCadidates.get(j);
-           //     System.out.println("Num Candidatos: " + selectedCandidates.size());
+                //     System.out.println("Num Candidatos: " + selectedCandidates.size());
 
                 if (selectedCandidates.size() > idealNumColumns) {
 
@@ -105,13 +105,13 @@ public class ListExtract {
                     ArrayList<FieldCandidate> newSelectedCandidates = split_line(rowsFQS.get(j), 0, idealNumColumns);
                     rowsCadidates.set(j, newSelectedCandidates);
                     outputCandidates(newSelectedCandidates);
-                    
+
                 } else {
 
                     outputCandidates(selectedCandidates);
                 }
             }
-            
+
             htmltg.geraTabela();
         } catch (Exception error) {
 
@@ -153,7 +153,6 @@ public class ListExtract {
             for (int posList = start; posList < candidates.size(); posList++) {
 
                 FieldCandidate candidate = candidates.get(posList);
-
                 //System.out.println("Ordenado: " + listCandFields.get(posList));
 
                 boolean mustAdd = true;
@@ -184,7 +183,6 @@ public class ListExtract {
                     }
                 }
             }
-
             //Call the Garbage Collector
             System.gc();
 
@@ -206,22 +204,24 @@ public class ListExtract {
     private void outputCandidates(ArrayList<FieldCandidate> selectedCandidates) {
 
         try {
-            
+
             ArrayList arrayTeste = new ArrayList<>();
-            
+
             FieldCandidateStartComparator sPosition = new FieldCandidateStartComparator();
 
             Collections.sort(selectedCandidates, sPosition);
-            
+
             for (int x = 0; x < selectedCandidates.size(); x++) {
+
                 arrayTeste.add(selectedCandidates.get(x).getField());
-                System.out.print(selectedCandidates.get(x).getField() +" | ");
+                System.out.print(selectedCandidates.get(x).getField() + " | ");
             }
-            
+
             System.out.println("");
-            
+
             htmltg.addingLineInTable(arrayTeste);
             arrayTeste.clear();
+
         } catch (Exception error) {
 
             error.printStackTrace();
@@ -266,7 +266,6 @@ public class ListExtract {
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
-
         return candidatesFound;
     }
 

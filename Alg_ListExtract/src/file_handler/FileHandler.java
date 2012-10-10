@@ -4,7 +4,9 @@
  */
 package file_handler;
 
+import alg_listextract.ListExtract;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This class is responsible for handle all the files in the project
@@ -25,9 +27,11 @@ public class FileHandler {
     private String scoreStructure = "";
     // Variável que define o diretório.
     String directory = "files\\lists\\";
+    ListExtract listExtract;
 
     public FileHandler() {
-//        patternFinder = new BetterAndTolerantPatternFinder(token);
+
+        listExtract = new ListExtract();
     }
 
     /**
@@ -60,7 +64,10 @@ public class FileHandler {
                     //System.out.println("File selected: " + fName);
 
                     // Chama o método que irá abrir cada um dos arquivos do diretório(de acordo com a execução do for).
-                    readingFiles(fName);
+
+                    listExtract.split_Lines(fName, readingFiles(fName));
+                    //Call the Garbage Collector
+                    System.gc();
                 }
 
             } else {
@@ -81,8 +88,9 @@ public class FileHandler {
      *
      * @param nameFile Nome do arquivo a ser manipulado.
      */
-    public void readingFiles(String nameFile) {
+    public ArrayList readingFiles(String nameFile) {
 
+        ArrayList lista = new ArrayList<>();
         boolean notEmpty;
         String lineFile;
         int numLine = 0;
@@ -101,15 +109,9 @@ public class FileHandler {
 
                     lineFile = readFile.readLine();
                     numLine++;
+                    lista.add(lineFile);
 
                     //  System.out.println("Line [" + (numLine++) + "]: " + lineFile);
-
-                    /**
-                     * Chama o método que ira normalizar os dados da linha atual
-                     * do arquivo, o retorno do método é armazenado na váriavel
-                     * lineNormalized.
-                     */
-                    //   lineNormalized = (filter.stringNormalize(lineFile));
                 }
                 // Closes the file.
                 readFile.close();
@@ -127,30 +129,33 @@ public class FileHandler {
 
             System.out.println("Other Exception: " + otherError);
         }
-    }
 
+        return lista;
+    }
 //================================ Out Files =============================
+
     /**
      * Método responsável por criar um novo arquivo(arquivo de saída) para
      * armazenar os dados filtrados do arquivo original.
      *
-     * @param nameOutFile Nome do arquivo que esta sendo manipulado, esta
-     * informação é necessária para nomear o arquivo de saída.
+     * @param nameOutFile Nome do arquivo que esta sendo manipulado
+     * @param cabecalho
+     * @param fimPage
      */
-    public void newOutFile(String nameOutFile) {
+    public void newOutFile(String nameOutFile, String cabecalho, String line, String fimPage) {
 
         String nameNewFile = "";
 
         try {
 
             // Cria um novo arquivo no diretório de saída especificado.
-            File file = new File("files\\outLists", "OUT_" + nameOutFile + "");
+            File file = new File("files\\outLists", "TABELA_" + nameOutFile + ".html");
             file.createNewFile();
 
             // Recupera o nome do arquivo criado.
             nameNewFile = file.getName();
 
-            // System.out.println("Name out file: " + nameNewFile + "\n");
+            System.out.println("\n Name out file: " + nameNewFile + "\n");
 
         } catch (IOException IOerror) {
 
@@ -159,22 +164,21 @@ public class FileHandler {
         } catch (Exception otherError) {
 
             System.out.println("Other Exception: " + otherError);
-
         }
 
         // Chama o método que escreve a estrutura já filtrada no arquivo txt de saída.
-        writeOutFile(nameNewFile);
+        writeOutFile(nameNewFile, cabecalho, line, fimPage);
     }
 
     /**
      * Método responsável por gravar os dados filtrados no arquivo de saída.
      *
-     * @param nameOutFile Nome do arquivo, informação necessária para
-     * identificar em qual arquivo de saíde deseja-se gravar os dados filtrados
-     * no memento.
+     * @param nameOutFile Nome do arquivo que esta sendo manipulado
+     * @param cabecalho cabecalho html
+     * @param fimPage fim da estruturação html da página
      */
     @SuppressWarnings({"ConvertToTryWithResources"})
-    public void writeOutFile(String nameOutFile) {
+    public void writeOutFile(String nameOutFile, String cabecalho, String line, String fimPage) {
 
         try {
 
@@ -182,16 +186,11 @@ public class FileHandler {
 
             BufferedWriter out = new BufferedWriter(fstream);
 
-            // Grava a estrutura filtrada no arquivo de saída.
-            out.write(charStructure);
-            // Limpa a variavel charStructure para ser utilizada no próximo arquivo.
-            charStructure = "";
-            // Cria uma nova liha no arquivo
+            out.write(cabecalho);
             out.newLine();
-            // Grava o score de estruturação no arquivo de saída.
-            out.write(scoreStructure);
-            // Limpa a variavel scoreStructure para ser utilizada no próximo arquivo.
-            scoreStructure = "";
+            out.write(line);
+            out.newLine();
+            out.write(fimPage);
 
             // Closes the file.
             out.close();
@@ -203,7 +202,6 @@ public class FileHandler {
         } catch (Exception otherError) {
 
             System.out.println("Other Exception: " + otherError);
-
         }
     }
 }
