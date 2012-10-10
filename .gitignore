@@ -6,3 +6,5 @@
 *.ear
 /Alg_ListExtract/build/
 /Alg_ListExtract/dist/
+/Alg_ListExtract/files/outLists/
+/Alg_ListExtract/files/lists/
