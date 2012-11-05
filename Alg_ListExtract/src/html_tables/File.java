@@ -6,7 +6,9 @@ package html_tables;
 
 /**
  * This class handle the data of the files
- *
+ * 
+ * No futuro talvez seja melhor mover esta classe para o package "file_handler".
+ * 
  * @since 05/11/2012 - Last change: 05/11/2012
  * @version 0.1
  * @author Juliano R. Macedo
