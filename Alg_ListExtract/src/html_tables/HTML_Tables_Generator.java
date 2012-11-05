@@ -16,48 +16,54 @@ import java.util.ArrayList;
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  *
  */
-public class HTML_Tables_Generator {
-
-    private String nameFile;
-    private String row = "<tr>";
+public class HTML_Tables_Generator extends File {
 
     /**
      * Constructor of this class
      *
-     * @param numColumn
-     * @param nameOfFile
+     * @param nameOfFile file name manipulated now
      */
     public HTML_Tables_Generator(String nameOfFile) {
 
-        this.nameFile = nameOfFile;
+        setNameFile(nameOfFile);
+        String startRow = "";
+        setRowFile(startRow);
     }
 
     /**
      * Add the values in row, that is subsequently written to the file
      *
-     * @param arrayLines
+     * @param arrayLines array contains lines of the file
      */
     public void addingLineInTable(ArrayList arrayLines) {
 
         try {
-
+            String endRow = "</tr> \n";
             for (int j = 0; j < arrayLines.size(); j++) {
 
-                row += "<td>" + arrayLines.get(j) + "</td>";
-                // System.out.println("Teste: "+ (j) + " | " + arrayLines.get(j)); 
+                if (j == 0) {
+
+                    String startRow = "<tr>";
+                    setRowFile(getRowFile() + startRow);
+                    constructionRow("<td>" + arrayLines.get(j) + "</td>");
+                } else {
+
+                    constructionRow("<td>" + arrayLines.get(j) + "</td>");
+                }
             }
-
-            row += "</tr> \n";
-            //  System.out.println(line);    
-        } catch (Exception Error) {
-
-            System.out.println("Exception: " + Error);
+            setRowFile((getRowFile()) + endRow);
+        } catch (Exception error) {
+            /**
+             * Show the StackTrace error [for debug]
+             */
+            error.printStackTrace();
+            //System.out.println("Exception: " + error);
         }
     }
 
     /**
      * Construct the corps of table based in HTML
-     * 
+     *
      * Método responsável por criar a estrutura da tabela de acordo com a
      * linguagem de marcação HTML, trata-se de uma construção rustica de um
      * tabela HTML para esta receber os valores vindos da lista.
@@ -68,15 +74,18 @@ public class HTML_Tables_Generator {
             String cabecalho = "<!DOCTYPE HTML PUBLIC " + "-//W3C//DTD HTML 4.01//EN" + "http://www.w3.org/TR/html4/strict.dtd" + ">"
                     + "<html lang=" + "pt-br" + ">" + "<head>" + " <meta http-equiv=" + "content-type" + " content=" + "text/html; charset=utf-8" + ">"
                     + "</head>" + "<body>" + "<div id=" + "tabela>" + "<table border=" + "1" + ">";
-            String fim = "</table> </div> </body> </html>";
+            String lastRowFile = "</table> </div> </body> </html>";
 
 
             FileHandler fileHandler = new FileHandler();
-            fileHandler.newOutFile(nameFile, cabecalho, row, fim);
+            fileHandler.newOutFile(getNameFile(), cabecalho, getRowFile(), lastRowFile);
 
-        } catch (Exception Error) {
-
-            System.out.println("Exception: " + Error);
+        } catch (Exception error) {
+            /**
+             * Show the StackTrace error [for debug]
+             */
+            error.printStackTrace();
+            //System.out.println("Exception: " + error);
         }
     }
 }
