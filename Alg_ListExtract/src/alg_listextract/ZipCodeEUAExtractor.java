@@ -30,6 +30,6 @@ public class ZipCodeEUAExtractor extends FieldExtractor {
      */
     @Override
     public double getScore() {
-        return 0.85;
+        return 0.75;
     }
 }
