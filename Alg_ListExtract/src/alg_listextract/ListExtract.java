@@ -17,8 +17,8 @@ import java.util.Map.Entry;
  * Algoritmo para separar as possíveis conlunas da tabla. Faz parte do conjunto
  * de algoritmos do artigo "Harvesting Relational Tables from Lists on the Web"
  *
- * Os algoritmos do ListExtract descritos aqui, estão a partir da página 04 do
- * artigo.
+ * Os algoritmos do ListExtract descritos aqui, estão presentes a partir da
+ * página 04 do artigo.
  *
  * @since 15/07/2012 - Last change: 29/09/2012
  * @version 0.1
@@ -28,32 +28,12 @@ import java.util.Map.Entry;
  */
 public class ListExtract {
 
-     HTML_Tables_Generator htmltg;
-    
+    HTML_Tables_Generator htmltg;
+
     public ListExtract() {
-//        listSubSequen = new ArrayList<>();
-//
-//        listSubSequen.add("1. What's Opera Doc (Waner Bros/1975)");
-//        listSubSequen.add("2. Duck Amuck (Waner Bros/1953)");
-//        listSubSequen.add("3. The Band Concert (Disney/1935)");
-//        listSubSequen.add("4. Duck Dodgers in the 24 1/2th Century (Warnner Bross/1953)");
-//        listSubSequen.add("5. One Froggy Evening (Waner Bros/1956)");
-//        listSubSequen.add("6. Gertie The Dinossaur (McCay)");
-//        listSubSequen.add("7. Red Hot Riding Hood (MGM/1943");
-//        listSubSequen.add("8. Porky In Wackyland (Waner Bros/1938)");
-//        listSubSequen.add("9. Gerald McBoing Boing (UPA/1951)");
-//        listSubSequen.add("10. King-Size Canary (MGM/1947)");
-//        listSubSequen.add("11. Three Little Pigs (Disney/1933)");
-//        listSubSequen.add("12. Rabbit of Seville (Waner Bros/1950)");
-//        listSubSequen.add("13. Steamboat Willie (Disney/1928)");
-//        listSubSequen.add("14. The Old Will (Disney/1937)");
-//        listSubSequen.add("15. Bad Luck Blackie (MGM/1949)");
-//        listSubSequen.add("16. The Great Piggy Bank Robbery (Waner Bros/1946)");
-//        listSubSequen.add("17. Popeye the Sailor Meets Sindbad the Sailor (Fleischer/1936)");
     }
 
     /**
-     *
      * We create Cf , a ranked list of all field candidates sorted in descending
      * order of their FQ scores. In each iteration of the loop, the candidate
      * with the highest score, ftop, is removed from the ranked list and marked
@@ -61,6 +41,8 @@ public class ListExtract {
      * ftop are then removed from Cf to ensure that no two overlapping fields
      * are selected. This process terminates when Cf becomes empty.
      *
+     * @param nameFile
+     * @param listSubSequen
      */
     @SuppressWarnings("CallToThreadDumpStack")
     public void split_Lines(String nameFile, ArrayList listSubSequen) {
@@ -70,12 +52,11 @@ public class ListExtract {
 
             ArrayList numColum;
             numColum = new ArrayList();
-
             ArrayList<ArrayList<FieldCandidate>> rowsFQS = new ArrayList<>();
-
             ArrayList<ArrayList<FieldCandidate>> rowsCadidates = new ArrayList<>();
 
             for (int j = 0; j < listSubSequen.size(); j++) {
+
                 ArrayList<FieldCandidate> possibleFields = computeFQS(String.valueOf(listSubSequen.get(j)));
                 rowsFQS.add(possibleFields);
             }
@@ -88,16 +69,14 @@ public class ListExtract {
             }
 
             int idealNumColumns = computeIdealNumColumns(numColum);
-
             System.out.println("Ideal Columns " + idealNumColumns);
 
-            htmltg = new HTML_Tables_Generator(idealNumColumns, nameFile);
+            htmltg = new HTML_Tables_Generator(nameFile);
 
             for (int j = 0; j < rowsCadidates.size(); j++) {
 
                 System.out.println("**********************************************************");
                 ArrayList<FieldCandidate> selectedCandidates = rowsCadidates.get(j);
-                //     System.out.println("Num Candidatos: " + selectedCandidates.size());
 
                 if (selectedCandidates.size() > idealNumColumns) {
 
@@ -106,15 +85,26 @@ public class ListExtract {
                     rowsCadidates.set(j, newSelectedCandidates);
                     outputCandidates(newSelectedCandidates);
 
+                } else if (selectedCandidates.size() < idealNumColumns) {
+
+                    for (int i = 0; i < rowsCadidates.get(j).size(); i++) {
+
+                        pre_AlignShortRecord(selectedCandidates.get(i).getField(), rowsCadidates, idealNumColumns);
+                    }
+
+                    outputCandidates(selectedCandidates);
                 } else {
 
                     outputCandidates(selectedCandidates);
                 }
             }
 
-            htmltg.geraTabela();
+            htmltg.tableGenerator();
         } catch (Exception error) {
 
+            /**
+             * Show the StackTrace error [for debug]
+             */
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
@@ -128,17 +118,30 @@ public class ListExtract {
      * @param line
      * @return a list with fields candidates of the line
      */
+    @SuppressWarnings("CallToThreadDumpStack")
     private ArrayList<FieldCandidate> computeFQS(String line) {
 
-        ArrayList<FieldCandidate> listCandFields = fieldQualityScore(line);
-        Collections.sort(listCandFields);
-        Collections.reverse(listCandFields);
+        ArrayList<FieldCandidate> listCandFields = new ArrayList<>();
 
+        try {
+
+            listCandFields = fieldQualityScore(line);
+            Collections.sort(listCandFields);
+            Collections.reverse(listCandFields);
+
+        } catch (Exception error) {
+
+            /**
+             * Show the StackTrace error [for debug]
+             */
+            error.printStackTrace();
+//            System.out.println("Exception: " + error);
+        }
         return listCandFields;
     }
 
     /**
-     *
+     * 
      * @param candidates
      * @param start
      * @param maxFields
@@ -153,7 +156,6 @@ public class ListExtract {
             for (int posList = start; posList < candidates.size(); posList++) {
 
                 FieldCandidate candidate = candidates.get(posList);
-                //System.out.println("Ordenado: " + listCandFields.get(posList));
 
                 boolean mustAdd = true;
 
@@ -187,7 +189,9 @@ public class ListExtract {
             System.gc();
 
         } catch (Exception error) {
-
+            /**
+             * Show the StackTrace error [for debug]
+             */
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
@@ -205,7 +209,7 @@ public class ListExtract {
 
         try {
 
-            ArrayList arrayTeste = new ArrayList<>();
+            ArrayList arrayRow = new ArrayList<>();
 
             FieldCandidateStartComparator sPosition = new FieldCandidateStartComparator();
 
@@ -213,17 +217,19 @@ public class ListExtract {
 
             for (int x = 0; x < selectedCandidates.size(); x++) {
 
-                arrayTeste.add(selectedCandidates.get(x).getField());
+                arrayRow.add(selectedCandidates.get(x).getField());
                 System.out.print(selectedCandidates.get(x).getField() + " | ");
             }
 
             System.out.println("");
 
-            htmltg.addingLineInTable(arrayTeste);
-            arrayTeste.clear();
+            htmltg.addingLineInTable(arrayRow);
+            arrayRow.clear();
 
         } catch (Exception error) {
-
+            /**
+             * Show the StackTrace error [for debug]
+             */
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
@@ -262,7 +268,9 @@ public class ListExtract {
             candidatesFound.addAll(new ZipCodeEUAExtractor().extractFields(subSequences));
 
         } catch (Exception error) {
-
+            /**
+             * Show the StackTrace error [for debug]
+             */
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
@@ -311,9 +319,6 @@ public class ListExtract {
 
             HashMap<Integer, Integer> mapColumnOccurrence = new HashMap<>();
             ArrayList<Integer> listNumColumns = arrayNcolum;
-//            ArrayList arrayLongRecords = new ArrayList();
-
-//        System.out.println("Lista de Colunas: " + listNumColumns);
 
             for (Integer integer : listNumColumns) {
 
@@ -325,37 +330,83 @@ public class ListExtract {
                     mapColumnOccurrence.put(integer, 1);
                 }
             }
-//        System.out.println("HashMap par Key(numColum) >> Value(numOcorrências): " + mapColumOccurren);
 
             Collection<Integer> valuesOfHMap;
 
             valuesOfHMap = mapColumnOccurrence.values();
             Integer highOccurrences = Collections.max(valuesOfHMap);
 
-//        System.out.println("Value: " + highOccurrences);
-
             for (Entry<Integer, Integer> entry : mapColumnOccurrence.entrySet()) {
                 if (highOccurrences.equals(entry.getValue())) {
 
                     idealNumColumns = entry.getKey();
-//                System.out.println("Key: " + entry.getKey());
                 }
             }
-//
-//            for (int j = 0; j < listNumColumns.size(); j++) {
-//
-//                if (listNumColumns.get(j) > idealNumColumns) {
-//
-//                    arrayLongRecords.add(String.valueOf(listSubSequen.get(j)));
-//                }
-//            }
-
         } catch (Exception error) {
-
+            /**
+             * Show the StackTrace error [for debug]
+             */
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
 
         return idealNumColumns;
+    }
+
+    /**
+     * Criar um método que receba uma tipo de dado e um conjunto de tipos vindos
+     * de uma das colunas corretas, o seu retorno será uma pontuação que indique
+     * a semelhança do tipo com os tipos daquela coluna[correta].
+     *
+     * @param field the field for comparison
+     * @param rowsCadidates the all candidates fields == idealNumColumn
+     * @param idealNumColumn the number of ideal columns
+     */
+    @SuppressWarnings("CallToThreadDumpStack")
+    public void pre_AlignShortRecord(String field, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn) {
+
+        int maxRepeticoes = 0;
+        int posicaoDaColuna = 0;
+        int numLinhas = rowsCadidates.size();
+        // System.out.println("\nCampo: " + field + "[" + correctColumn.size() + "]");
+
+        try {
+            for (int j = 0; j < idealNumColumn; j++) {
+
+                int repeticoes = 0;
+                for (int i = 0; i < rowsCadidates.size(); i++) {
+
+                    if (rowsCadidates.get(i).size() == idealNumColumn) {
+
+                        String fieldCorrectColumn = rowsCadidates.get(i).get(j).getField();
+                        //   System.out.println("Other field: " + fieldCorrectColumn);
+
+                        if (field.equals(fieldCorrectColumn)) {
+
+                            repeticoes++;
+                            System.out.println(field + " == " + fieldCorrectColumn + " < Num coluna:" + posicaoDaColuna);
+                        }
+                    }
+                }
+
+                if (repeticoes > maxRepeticoes) {
+
+                    System.out.println("Repetição total: " + repeticoes);
+                    posicaoDaColuna = j;
+                    maxRepeticoes = repeticoes;
+                }
+            }
+
+            float scoreAtual = (((float) maxRepeticoes) / numLinhas);
+            System.out.println("Field " + field);
+            System.out.println("Maior Score: " + scoreAtual + " - Coluna: " + posicaoDaColuna);
+
+        } catch (Exception error) {
+            /**
+             * Show the StackTrace error [for debug]
+             */
+            error.printStackTrace();
+//            System.out.println("Exception: " + error);
+        }
     }
 }
