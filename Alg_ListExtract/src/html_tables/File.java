@@ -5,13 +5,27 @@
 package html_tables;
 
 /**
+ * This class handle the data of the files
  *
- * @author PC
+ * @since 05/11/2012 - Last change: 05/11/2012
+ * @version 0.1
+ * @author Juliano R. Macedo
+ * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  */
 public class File {
-    
+
     private String nameFile;
-     private String rowFile;
+    private String rowFile;
+
+    /**
+     * Construction the row with data of the file
+     *
+     * @param rowData data of the row
+     */
+    public void constructionRow(String rowData) {
+
+        setRowFile((getRowFile()) + rowData);
+    }
 
     /**
      * @return the nameFile
@@ -40,5 +54,4 @@ public class File {
     public void setRowFile(String rowFile) {
         this.rowFile = rowFile;
     }
-    
 }
