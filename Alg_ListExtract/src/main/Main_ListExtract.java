@@ -31,7 +31,6 @@ public class Main_ListExtract {
             FileHandler fileHandler = new FileHandler();
 
 //          fileHandler.listFileInDirectory(directory);
-
             fileHandler.splitFile(nameFile);
 
         } catch (Exception error) {
