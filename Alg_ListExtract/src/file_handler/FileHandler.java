@@ -21,28 +21,19 @@ import java.util.ArrayList;
  */
 public class FileHandler {
 
-    // Variável que recebe a estrutura de cada linha do arquivo
-    private String charStructure = "";
-    // Variável que recebe o valor do score de estruturação
-    private String scoreStructure = "";
-    // Variável que define o diretório.
-    String directory = "files\\lists\\";
-    ListExtract listExtract;
-
     public FileHandler() {
-
-        listExtract = new ListExtract();
     }
 
     /**
      * Método responsável por listar e armazenar em um array de string os nomes
      * de todos os arquivos dentro do diretório previamente fornecido.
      *
+     * @param directory
      */
-    public void listFileInDirectory() {
+    public void listFileInDirectory(String directory) {
 
         try {
-
+            ListExtract listExtract = new ListExtract();
             File file = new File(directory);
 
             // Se o diretório existir entra no if. 
@@ -60,24 +51,68 @@ public class FileHandler {
                 for (int j = 0; j < filesNames.length; j++) {
 
                     String fName = filesNames[j];
-
                     //System.out.println("File selected: " + fName);
 
-                    // Chama o método que irá abrir cada um dos arquivos do diretório(de acordo com a execução do for).
+                    @SuppressWarnings("UnusedAssignment")
+                    ArrayList listIsEmpty = new ArrayList();
+                    listIsEmpty = readingFiles(fName);
 
-                    listExtract.split_Lines(fName, readingFiles(fName));
+                    if (!listIsEmpty.isEmpty()) {
+
+                        listExtract.split_Lines(fName, readingFiles(fName));
+                    } else {
+                        /**
+                         * This file is empty.
+                         *
+                         * O arquivo aberto esta vazio, por isso não se faz
+                         * nada.
+                         */
+                    }
                     //Call the Garbage Collector
                     System.gc();
                 }
 
             } else {
-                //Informa que o diretório especificado não existe.
-                System.out.println("Directory does not exist!");
+
+                System.out.println(" Error: Directory doesn't exists!");
+            }
+        } catch (Exception error) {
+
+            System.out.println("Other Exception: " + error);
+        }
+    }
+
+    /**
+     * Método responsável por exectar a chamada dos algoritmos para trabalhar
+     * sobre o arquivo recebido por parâmetro.
+     *
+     * @param fileName
+     */
+    public void splitFile(String fileName) {
+
+        try {
+            ListExtract listExtract = new ListExtract();
+
+            @SuppressWarnings("UnusedAssignment")
+            ArrayList listIsEmpty = new ArrayList();
+            listIsEmpty = readingFiles(fileName);
+
+            if (!listIsEmpty.isEmpty()) {
+
+                listExtract.split_Lines(fileName, readingFiles(fileName));
+            } else {
+                /**
+                 * This file is empty.
+                 *
+                 * O arquivo aberto esta vazio, por isso não se faz nada.
+                 */
             }
 
-        } catch (Exception otherError) {
+            //Call the Garbage Collector
+            System.gc();
+        } catch (Exception error) {
 
-            System.out.println("Other Exception: " + otherError);
+            System.out.println("Other Exception: " + error);
         }
     }
 
@@ -90,35 +125,38 @@ public class FileHandler {
      */
     public ArrayList readingFiles(String nameFile) {
 
-        ArrayList lista = new ArrayList<>();
+        ArrayList list = new ArrayList<>();
         boolean notEmpty;
         String lineFile;
         int numLine = 0;
 
         try {
-
-            // Abre e carrega no buffer o arquivo cujo nome foi recebido por parâmetro(nameFile).
+            /**
+             * Abre e carrega no buffer o arquivo cujo nome foi recebido por
+             * parâmetro(nameFile).
+             */
             BufferedReader readFile = new BufferedReader(new FileReader("files\\lists\\" + nameFile + ""));
 
             notEmpty = readFile.ready();
-
-            // Verifica se existe conteúdo no arquivo informado.
+            /**
+             * Check if the file is empty
+             *
+             * Verifica se existe conteúdo no arquivo informado.
+             */
             if (notEmpty) {
 
                 while (readFile.ready()) {
 
                     lineFile = readFile.readLine();
                     numLine++;
-                    lista.add(lineFile);
-
-                    //  System.out.println("Line [" + (numLine++) + "]: " + lineFile);
+                    list.add(lineFile);
                 }
                 // Closes the file.
                 readFile.close();
 
             } else {
 
-                System.out.println("The file selected is empty.");
+                System.out.println(" The file selected is empty.");
             }
 
         } catch (IOException IOerror) {
@@ -130,19 +168,21 @@ public class FileHandler {
             System.out.println("Other Exception: " + otherError);
         }
 
-        return lista;
+        return list;
     }
+//
 //================================ Out Files =============================
+//
 
     /**
      * Método responsável por criar um novo arquivo(arquivo de saída) para
      * armazenar os dados filtrados do arquivo original.
      *
      * @param nameOutFile Nome do arquivo que esta sendo manipulado
-     * @param cabecalho
-     * @param fimPage
+     * @param cabecalho cabecalho html
+     * @param fimPage fim da estruturação html da página
      */
-    public void newOutFile(String nameOutFile, String cabecalho, String line, String fimPage) {
+    public void newOutFile(String nameOutFile, String cabecalho, String row, String fimPage) {
 
         String nameNewFile = "";
 
@@ -167,7 +207,7 @@ public class FileHandler {
         }
 
         // Chama o método que escreve a estrutura já filtrada no arquivo txt de saída.
-        writeOutFile(nameNewFile, cabecalho, line, fimPage);
+        writeOutFile(nameNewFile, cabecalho, row, fimPage);
     }
 
     /**
@@ -178,7 +218,7 @@ public class FileHandler {
      * @param fimPage fim da estruturação html da página
      */
     @SuppressWarnings({"ConvertToTryWithResources"})
-    public void writeOutFile(String nameOutFile, String cabecalho, String line, String fimPage) {
+    public void writeOutFile(String nameOutFile, String cabecalho, String row, String fimPage) {
 
         try {
 
@@ -188,7 +228,7 @@ public class FileHandler {
 
             out.write(cabecalho);
             out.newLine();
-            out.write(line);
+            out.write(row);
             out.newLine();
             out.write(fimPage);
 

@@ -4,7 +4,6 @@
  */
 package main;
 
-import alg_listextract.ListExtract;
 import file_handler.FileHandler;
 
 /**
@@ -27,11 +26,13 @@ public class Main_ListExtract {
 
         try {
 
-            //ListExtract objectSL = new ListExtract();
+            String directory = "files\\lists\\";
+            String nameFile = "listExemple.txt";
             FileHandler fileHandler = new FileHandler();
-            fileHandler.listFileInDirectory();
 
-           // objectSL.split_Lines();
+//          fileHandler.listFileInDirectory(directory);
+
+            fileHandler.splitFile(nameFile);
 
         } catch (Exception error) {
 

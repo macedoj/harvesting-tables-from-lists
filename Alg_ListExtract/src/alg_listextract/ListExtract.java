@@ -47,7 +47,6 @@ public class ListExtract {
     @SuppressWarnings("CallToThreadDumpStack")
     public void split_Lines(String nameFile, ArrayList listSubSequen) {
 
-
         try {
 
             ArrayList numColum;
