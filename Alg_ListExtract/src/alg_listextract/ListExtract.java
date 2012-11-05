@@ -140,7 +140,7 @@ public class ListExtract {
     }
 
     /**
-     * 
+     *
      * @param candidates
      * @param start
      * @param maxFields

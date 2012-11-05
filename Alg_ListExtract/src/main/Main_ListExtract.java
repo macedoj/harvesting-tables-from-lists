@@ -30,7 +30,7 @@ public class Main_ListExtract {
             String nameFile = "listExemple.txt";
             FileHandler fileHandler = new FileHandler();
 
-//          fileHandler.listFileInDirectory(directory);
+//            fileHandler.listFileInDirectory(directory);
             fileHandler.splitFile(nameFile);
 
         } catch (Exception error) {
