@@ -5,6 +5,7 @@
 package main;
 
 import file_handler.FileHandler;
+import structure_aligning.Table;
 
 /**
  * This is a Main Class...
@@ -25,14 +26,19 @@ public class Main_ListExtract {
     public static void main(String args[]) {
 
         try {
-
+            Table t = new Table();
+            t.teste1();
+            t.linhas();
+            
+            
+/**
             String directory = "files\\lists\\";
             String nameFile = "listExemple.txt";
             FileHandler fileHandler = new FileHandler();
 
 //            fileHandler.listFileInDirectory(directory);
             fileHandler.splitFile(nameFile);
-
+*/
         } catch (Exception error) {
 
             System.out.println(" Exception: " + error);
