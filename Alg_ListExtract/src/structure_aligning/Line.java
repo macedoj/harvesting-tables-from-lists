@@ -2,20 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package structure_of_aligning;
+package structure_aligning;
 
 /**
  *
  * @author PC
  */
-public class Column {
+public class Line {
 
     private double scoreA;
     private double scoreB;
     private double scoreC;
     
     
-    public Column() {
+    public Line() {
     }
 
     /**

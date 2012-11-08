@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package structure_of_aligning;
+package structure_aligning;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -10,53 +12,44 @@ package structure_of_aligning;
  */
 public class Column {
 
-    private double scoreA;
-    private double scoreB;
-    private double scoreC;
-    
-    
+    private ArrayList<Line> columns = new ArrayList<>();
+
     public Column() {
     }
 
     /**
-     * @return the scoreA
+     * 
+     * @param scoreA
+     * @param scoreB
+     * @param scoreC
+     * @return ArrayList<Line> columns
      */
-    public double getScoreA() {
-        return scoreA;
+    public ArrayList constructColumns(double scoreA, double scoreB, double scoreC) {
+
+        Line objLines = new Line();
+        ArrayList<Line> arrayColumns = new ArrayList<Line>();
+
+        objLines.setScoreA(scoreA);
+        objLines.setScoreB(scoreB);
+        objLines.setScoreC(scoreC);
+
+        arrayColumns.add(objLines);
+        setColumns(arrayColumns);
+
+        return getColumns();
     }
 
     /**
-     * @param scoreA the scoreA to set
+     * @return the columns
      */
-    public void setScoreA(double scoreA) {
-        this.scoreA = scoreA;
+    public ArrayList<Line> getColumns() {
+        return columns;
     }
 
     /**
-     * @return the scoreB
+     * @param columns the columns to set
      */
-    public double getScoreB() {
-        return scoreB;
-    }
-
-    /**
-     * @param scoreB the scoreB to set
-     */
-    public void setScoreB(double scoreB) {
-        this.scoreB = scoreB;
-    }
-
-    /**
-     * @return the scoreC
-     */
-    public double getScoreC() {
-        return scoreC;
-    }
-
-    /**
-     * @param scoreC the scoreC to set
-     */
-    public void setScoreC(double scoreC) {
-        this.scoreC = scoreC;
+    public void setColumns(ArrayList<Line> columns) {
+        this.columns = columns;
     }
 }
