@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package structure_aligning;
+package structure_aligning.others;
 
 import java.util.ArrayList;
 
