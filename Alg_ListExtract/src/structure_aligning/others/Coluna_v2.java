@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package structure_aligning;
+package structure_aligning.others;
 
 import java.util.ArrayList;
 
@@ -10,13 +10,13 @@ import java.util.ArrayList;
  *
  * @author PC
  */
-public class Coluna {
+public class Coluna_v2 {
 
     private ArrayList score;
     String nome;
 
 
-    public Coluna() {
+    public Coluna_v2() {
 
         score = new ArrayList();
     }

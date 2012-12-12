@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package structure_aligning;
+package structure_aligning.others;
 
 import java.util.ArrayList;
 
@@ -10,13 +10,13 @@ import java.util.ArrayList;
  *
  * @author PC
  */
-public class Valor {
+public class Valor_v2 {
 
     private String valor;
-    private ArrayList<Coluna> colunas;
+    private ArrayList<Coluna_v2> colunas;
 
-    public Valor() {
-        colunas = new ArrayList<>();
+    public Valor_v2() {
+        colunas = new ArrayList<Coluna_v2>();
     }
 
     /**
@@ -24,14 +24,14 @@ public class Valor {
      * @param objColuna
      * @return
      */
-    public Coluna obterColuna(int indice) {
+    public Coluna_v2 obterColuna(int indice) {
         return this.colunas.get(indice);
     }
 
     public void adiconarColuna(double score) {
 
-        Coluna coluna = new Coluna();
-        coluna.addScore(score);
+        Coluna_v2 coluna = new Coluna_v2();
+//        coluna.addScore(score);
         //Verificar como fica o add aqui
         this.colunas.add(coluna);
     }
@@ -46,7 +46,7 @@ public class Valor {
 
         for (int j = 0; j < colunas.size(); j++) {
 
-            System.out.println(colunas.get(j));
+            System.out.print(colunas.get(j));
         }
     }
 
