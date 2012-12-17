@@ -4,6 +4,7 @@
  */
 package html_tables;
 
+import file_handler.DataFile;
 import file_handler.FileHandler;
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  *
  */
-public class HTML_Tables_Generator extends File {
+public class HTML_Tables_Generator extends DataFile {
 
     /**
      * Constructor of this class

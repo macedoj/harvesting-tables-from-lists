@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package html_tables;
+package file_handler;
 
 /**
  * This class handle the data of the files
@@ -14,7 +14,7 @@ package html_tables;
  * @author Juliano R. Macedo
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  */
-public class File {
+public class DataFile {
 
     private String nameFile;
     private String rowFile;

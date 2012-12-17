@@ -135,7 +135,7 @@ public class FileHandler {
              * Abre e carrega no buffer o arquivo cujo nome foi recebido por
              * parâmetro(nameFile).
              */
-            BufferedReader readFile = new BufferedReader(new FileReader("files\\lists\\ListasExemploSIEPE\\" + nameFile + ""));
+            BufferedReader readFile = new BufferedReader(new FileReader("files\\lists\\" + nameFile));
 
             notEmpty = readFile.ready();
             /**

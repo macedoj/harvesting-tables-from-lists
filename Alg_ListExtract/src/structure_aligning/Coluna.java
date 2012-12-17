@@ -18,9 +18,9 @@ public class Coluna {
 
         coluna = new ArrayList<>();
     }
-    
+
     /**
-     * 
+     *
      * @param numColuna the number of column
      * @param s the object of the class Score
      */
