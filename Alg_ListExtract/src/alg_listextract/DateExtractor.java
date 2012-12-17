@@ -34,4 +34,13 @@ public class DateExtractor extends FieldExtractor {
     public double getScore() {
         return 0.7;
     }
+
+    /**
+     * 
+     * @return the name of expression
+     */
+    @Override
+    public String getNameExpression() {
+        return "Date_Expression";
+    }
 }

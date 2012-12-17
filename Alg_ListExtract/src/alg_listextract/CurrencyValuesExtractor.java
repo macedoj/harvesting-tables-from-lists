@@ -32,4 +32,9 @@ public class CurrencyValuesExtractor extends FieldExtractor {
     public double getScore() {
         return 0.4;
     }
+
+    @Override
+    public String getNameExpression() {
+        return "CurrencyValues_Expression";
+    }
 }

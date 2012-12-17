@@ -32,4 +32,9 @@ public class ZipCodeEUAExtractor extends FieldExtractor {
     public double getScore() {
         return 0.75;
     }
+
+    @Override
+    public String getNameExpression() {
+        return "ZipCodeEUA_Expression";
+    }
 }

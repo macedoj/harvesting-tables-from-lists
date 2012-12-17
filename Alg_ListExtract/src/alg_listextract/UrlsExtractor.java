@@ -32,6 +32,11 @@ public class UrlsExtractor extends FieldExtractor {
     public double getScore() {
         return 0.5;
     }
+
+    @Override
+    public String getNameExpression() {
+        return "Urls_Expression";
+    }
     
     
     

@@ -31,4 +31,9 @@ public class EmailExtractor extends FieldExtractor {
     public double getScore() {
         return 0.8;
     }
+
+    @Override
+    public String getNameExpression() {
+        return "Email_Expression";
+    }
 }

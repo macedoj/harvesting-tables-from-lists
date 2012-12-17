@@ -18,6 +18,25 @@ public class FieldCandidate implements Comparable<FieldCandidate> {
     private double score;
     private int start; //Posição inicial que o campo do grupo candidato inicia
     private int end; // Posição final que o campo do grupo candidato
+    
+    //Expressão correspondente
+    private String expressCorrespon;
+
+    /**
+     * 
+     * @return 
+     */
+    public String getExpressCorrespon() {
+        return expressCorrespon;
+    }
+
+    /**
+     * 
+     * @param expressCorrespon 
+     */
+    public void setExpressCorrespon(String expressCorrespon) {
+        this.expressCorrespon = expressCorrespon;
+    }
 
     /**
      *

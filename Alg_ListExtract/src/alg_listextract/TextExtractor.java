@@ -32,4 +32,9 @@ public class TextExtractor extends FieldExtractor {
     public double getScore() {
         return 0.1;
     }
+
+    @Override
+    public String getNameExpression() {
+        return "Text_Expression";
+    }
 }

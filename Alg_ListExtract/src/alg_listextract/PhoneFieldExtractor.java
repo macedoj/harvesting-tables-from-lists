@@ -36,4 +36,9 @@ public class PhoneFieldExtractor extends FieldExtractor {
         return 0.6;
 
     }
+
+    @Override
+    public String getNameExpression() {
+        return "Phone_Expression";
+    }
 }

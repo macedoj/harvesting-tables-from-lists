@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import structure_aligning.AlignShortRecord;
 
 /**
  * This class is responsible for construction the engine of the extraction
@@ -88,7 +89,8 @@ public class ListExtract {
 
                     for (int i = 0; i < rowsCadidates.get(j).size(); i++) {
 
-                        pre_AlignShortRecord(selectedCandidates.get(i).getField(), rowsCadidates, idealNumColumns);
+                        AlignShortRecord shortRecord = new AlignShortRecord();
+                        shortRecord.pre_AlignShortRecord(selectedCandidates.get(i).getField(), rowsCadidates, idealNumColumns);
                     }
 
                     outputCandidates(selectedCandidates);
@@ -265,6 +267,8 @@ public class ListExtract {
             candidatesFound.addAll(new UrlsExtractor().extractFields(subSequences));
             candidatesFound.addAll(new ZipCodeBREstractor().extractFields(subSequences));
             candidatesFound.addAll(new ZipCodeEUAExtractor().extractFields(subSequences));
+            candidatesFound.addAll(new DateExtractor().extractFields(subSequences));
+
 
         } catch (Exception error) {
             /**
@@ -348,64 +352,6 @@ public class ListExtract {
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
-
         return idealNumColumns;
-    }
-
-    /**
-     * Criar um método que receba uma tipo de dado e um conjunto de tipos vindos
-     * de uma das colunas corretas, o seu retorno será uma pontuação que indique
-     * a semelhança do tipo com os tipos daquela coluna[correta].
-     *
-     * @param field the field for comparison
-     * @param rowsCadidates the all candidates fields == idealNumColumn
-     * @param idealNumColumn the number of ideal columns
-     */
-    @SuppressWarnings("CallToThreadDumpStack")
-    public void pre_AlignShortRecord(String field, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn) {
-
-        int maxRepeticoes = 0;
-        int posicaoDaColuna = 0;
-        int numLinhas = rowsCadidates.size();
-        // System.out.println("\nCampo: " + field + "[" + correctColumn.size() + "]");
-
-        try {
-            for (int j = 0; j < idealNumColumn; j++) {
-
-                int repeticoes = 0;
-                for (int i = 0; i < rowsCadidates.size(); i++) {
-
-                    if (rowsCadidates.get(i).size() == idealNumColumn) {
-
-                        String fieldCorrectColumn = rowsCadidates.get(i).get(j).getField();
-                        //   System.out.println("Other field: " + fieldCorrectColumn);
-
-                        if (field.equals(fieldCorrectColumn)) {
-
-                            repeticoes++;
-                            System.out.println(field + " == " + fieldCorrectColumn + " < Num coluna:" + posicaoDaColuna);
-                        }
-                    }
-                }
-
-                if (repeticoes > maxRepeticoes) {
-
-                    System.out.println("Repetição total: " + repeticoes);
-                    posicaoDaColuna = j;
-                    maxRepeticoes = repeticoes;
-                }
-            }
-
-            float scoreAtual = (((float) maxRepeticoes) / numLinhas);
-            System.out.println("Field " + field);
-            System.out.println("Maior Score: " + scoreAtual + " - Coluna: " + posicaoDaColuna);
-
-        } catch (Exception error) {
-            /**
-             * Show the StackTrace error [for debug]
-             */
-            error.printStackTrace();
-//            System.out.println("Exception: " + error);
-        }
     }
 }

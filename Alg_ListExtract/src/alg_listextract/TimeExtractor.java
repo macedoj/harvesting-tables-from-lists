@@ -33,4 +33,9 @@ public class TimeExtractor extends FieldExtractor {
     public double getScore() {
         return 0.7;
     }
+
+    @Override
+    public String getNameExpression() {
+        return "Time_Expression";
+    }
 }

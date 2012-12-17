@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class is a 'field extractor' of the records[lines]
- * 
+ *
  * @since 15/07/2012 - Last change: 29/09/2012
  * @version 0.1
  * @author Juliano R.
@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public abstract class FieldExtractor {
 
     /**
-     * 
+     *
      * @param strSubSequences
      * @return fields found at the line
      */
@@ -30,19 +30,20 @@ public abstract class FieldExtractor {
 
         try {
 
-            Pattern pNumVal = Pattern.compile(getExpression());
-            Matcher mNumVal = pNumVal.matcher(strSubSequences);
+            Pattern patNumVal = Pattern.compile(getExpression());
+            Matcher matNumVal = patNumVal.matcher(strSubSequences);
 
-            while (mNumVal.find()) {
+            while (matNumVal.find()) { 
 
                 FieldCandidate fieldCand = new FieldCandidate();
 //                String aux = mNumVal.group();
 //                System.out.println(aux + " - " + getScore());  
-                fieldCand.setField(mNumVal.group());
+                fieldCand.setField(matNumVal.group());
                 fieldCand.setScore(getScore());
-
-                fieldCand.setStart(mNumVal.start());
-                fieldCand.setEnd(mNumVal.end());
+                fieldCand.setExpressCorrespon(getNameExpression()); 
+                
+                fieldCand.setStart(matNumVal.start());
+                fieldCand.setEnd(matNumVal.end());
 
                 fieldsFound.add(fieldCand);
             }
@@ -67,4 +68,10 @@ public abstract class FieldExtractor {
      * @return the score
      */
     public abstract double getScore();
+
+    /**
+     *
+     * @return the name of expression
+     */
+    public abstract String getNameExpression();
 }
