@@ -28,11 +28,17 @@ public class AlignShortRecord {
     @SuppressWarnings("CallToThreadDumpStack")
     public void pre_AlignShortRecord(String field, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn) {
 
+        ArrayList<ArrayList<Score>> arrayScores;
         int numLinhas = rowsCadidates.size();
 
         try {
+            arrayScores = new ArrayList<>(idealNumColumn);
+
             for (int j = 0; j < idealNumColumn; j++) {
+
                 int repeticoes = 0;
+                float percent = 0;
+
                 for (int i = 0; i < rowsCadidates.size(); i++) {
 
                     if (rowsCadidates.get(i).size() == idealNumColumn) {
@@ -49,19 +55,22 @@ public class AlignShortRecord {
 
                 if (repeticoes > 0) {
 
-                    String calculo = (String.format("%,.2f", Float.valueOf(repeticoes * 100) / numLinhas));
-
-                    System.out.println(numLinhas + " | " + repeticoes + " \nColuna: " + j + " - Igualidaddes: " + calculo);
+                    percent = (computePercentage(repeticoes, numLinhas));
+                    System.out.println(numLinhas + " | " + repeticoes + " \nColuna: " + j + " - Igualidaddes: " + percent + "%");
                 }
 
-                /*          if (repeticoes > maxRepeticoes) {
+                Score s = new Score();
+                s.addScoreNoArray(percent);
+                carregaInfos(arrayScores, field, j, percent, s);
+
+
+
+                /*if (repeticoes > maxRepeticoes) {
 
                  System.out.println("Repetição total: " + repeticoes);
                  posicaoDaColuna = j;
                  maxRepeticoes = repeticoes;
                  }
-                 }
-
                  float scoreAtual = (((float) maxRepeticoes) / numLinhas);
                  System.out.println("Field: " + field);
                  System.out.println("Maior Score: " + scoreAtual + " - Coluna: " + posicaoDaColuna);
@@ -74,5 +83,36 @@ public class AlignShortRecord {
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
+    }
+
+    /**
+     *
+     * @param repeticoes number of occurrences
+     * @param numLinhas number of line
+     * @return the percentage of equals fields.
+     */
+    public float computePercentage(int repeticoes, int numLinhas) {
+
+        return ((float) (repeticoes * 100) / numLinhas);
+    }
+
+    public void carregaInfos(ArrayList<ArrayList<Score>> arrayScores, String field, int numColumn, float percent, Score s) {
+
+        arrayScores.add(numColumn, s.obterArrayScores());
+
+        System.out.println(arrayScores + " - ");
+
+        /*  
+         //carregar as informações dentro da estrutura de classes.
+         Valor v = new Valor();
+         Coluna c = new Coluna();
+         Score s = new Score();
+
+         c.criaColuna();
+         v.setValor(field);
+         v.defineScoreDoValor(percent, s, c);
+
+         c.exibirTabela();
+         */
     }
 }
