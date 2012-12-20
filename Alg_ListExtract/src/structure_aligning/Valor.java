@@ -12,7 +12,6 @@ public class Valor {
 
     private String valor;
 
-    // public void defineScoreDoValor(double score1, double score2, double score3, int numColuna, Coluna c) {
     public void defineScoreDoValor(double score, Score s, Coluna c) {
 
         s.setScore(score);
