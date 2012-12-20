@@ -43,7 +43,7 @@ public class Coluna {
 
         for (int j = 0; j < coluna.size(); j++) {
 
-            System.out.println(coluna.get(j).get(j));
+            System.out.print(coluna.get(j).get(j)+" - ");
         }
     }
 
