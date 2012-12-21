@@ -7,7 +7,7 @@ package file_handler;
 /**
  * This class handle the data of the files
  * 
- * @since 05/11/2012 - Last change: 05/11/2012
+ * @since 05/11/2012 - Last change: 20/12/2012
  * @version 0.1
  * @author Juliano R. Macedo
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
