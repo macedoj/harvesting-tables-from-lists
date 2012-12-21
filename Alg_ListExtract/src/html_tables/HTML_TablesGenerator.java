@@ -4,28 +4,27 @@
  */
 package html_tables;
 
-import file_handler.DirectoryConfig;
 import file_handler.FileConfig;
 import file_handler.FileHandler;
 import java.util.ArrayList;
 
 /**
- * This class is generator html tables.
+ * This class is generator HTML tables.
  *
- * @since 15/07/2012 - Last change: 09/10/2012
+ * @since 15/09/2012 - Last change: 09/10/2012
  * @version 0.1
  * @author Juliano R. Macedo
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  *
  */
-public class HTML_Tables_Generator extends FileConfig {
+public class HTML_TablesGenerator extends FileConfig {
 
     /**
      * Constructor of this class
      *
      * @param nameOfFile file name manipulated now
      */
-    public HTML_Tables_Generator(String nameOfFile) {
+    public HTML_TablesGenerator(String nameOfFile) {
 
         setNameFile(nameOfFile);
         String startRow = "";
@@ -40,16 +39,14 @@ public class HTML_Tables_Generator extends FileConfig {
     public void addingLineInTable(ArrayList arrayLines) {
 
         try {
+            String startRow = "<tr>";
             String endRow = "</tr> \n";
             for (int j = 0; j < arrayLines.size(); j++) {
 
                 if (j == 0) {
-
-                    String startRow = "<tr>";
                     setRowFile(getRowFile() + startRow);
                     constructionRow("<td>" + arrayLines.get(j) + "</td>");
                 } else {
-
                     constructionRow("<td>" + arrayLines.get(j) + "</td>");
                 }
             }
