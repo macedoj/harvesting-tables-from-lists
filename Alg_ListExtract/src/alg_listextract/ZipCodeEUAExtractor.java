@@ -33,6 +33,10 @@ public class ZipCodeEUAExtractor extends FieldExtractor {
         return 0.75;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "ZipCodeEUA_Expression";
