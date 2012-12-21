@@ -19,7 +19,8 @@ import java.util.regex.Pattern;
 public abstract class FieldExtractor {
 
     /**
-     *
+     * Search and extract candidates in line.
+     * 
      * @param strSubSequences
      * @return fields found at the line
      */
@@ -33,23 +34,21 @@ public abstract class FieldExtractor {
             Pattern patNumVal = Pattern.compile(getExpression());
             Matcher matNumVal = patNumVal.matcher(strSubSequences);
 
-            while (matNumVal.find()) { 
+            while (matNumVal.find()) {
 
                 FieldCandidate fieldCand = new FieldCandidate();
-//                String aux = mNumVal.group();
-//                System.out.println(aux + " - " + getScore());  
                 fieldCand.setField(matNumVal.group());
                 fieldCand.setScore(getScore());
-                fieldCand.setExpressCorrespon(getNameExpression()); 
-                
+                fieldCand.setExpressCorrespon(getNameExpression());
                 fieldCand.setStart(matNumVal.start());
                 fieldCand.setEnd(matNumVal.end());
-
                 fieldsFound.add(fieldCand);
             }
 
         } catch (Exception error) {
-
+            /**
+             * Show the StackTrace error [for debug]
+             */
             error.printStackTrace();
             // System.out.println("ERROR: " + error);
         }
