@@ -4,7 +4,8 @@
  */
 package html_tables;
 
-import file_handler.DataFile;
+import file_handler.DirectoryConfig;
+import file_handler.FileConfig;
 import file_handler.FileHandler;
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  *
  */
-public class HTML_Tables_Generator extends DataFile {
+public class HTML_Tables_Generator extends FileConfig {
 
     /**
      * Constructor of this class
@@ -76,7 +77,6 @@ public class HTML_Tables_Generator extends DataFile {
                     + "<html lang=" + "pt-br" + ">" + "<head>" + " <meta http-equiv=" + "content-type" + " content=" + "text/html; charset=utf-8" + ">"
                     + "</head>" + "<body>" + "<div id=" + "tabela>" + "<table border=" + "1" + ">";
             String lastRowFile = "</table> </div> </body> </html>";
-
 
             FileHandler fileHandler = new FileHandler();
             fileHandler.newOutFile(getNameFile(), cabecalho, getRowFile(), lastRowFile);
