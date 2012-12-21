@@ -69,7 +69,6 @@ public class ListExtract {
             }
 
             int idealNumColumns = computeIdealNumColumns(numColum);
-            System.out.println("Ideal Columns " + idealNumColumns);
 
             htmltg = new HTML_Tables_Generator(nameFile);
 
@@ -319,30 +318,32 @@ public class ListExtract {
         int idealNumColumns = 0;
 
         try {
+            if (!arrayNcolum.isEmpty()) {
 
-            HashMap<Integer, Integer> mapColumnOccurrence = new HashMap<>();
-            ArrayList<Integer> listNumColumns = arrayNcolum;
+                HashMap<Integer, Integer> mapColumnOccurrence = new HashMap<>();
+                ArrayList<Integer> listNumColumns = arrayNcolum;
 
-            for (Integer integer : listNumColumns) {
+                for (Integer integer : listNumColumns) {
 
-                if (mapColumnOccurrence.containsKey(integer)) {
+                    if (mapColumnOccurrence.containsKey(integer)) {
 
-                    mapColumnOccurrence.put(integer, mapColumnOccurrence.get(integer) + 1);
+                        mapColumnOccurrence.put(integer, mapColumnOccurrence.get(integer) + 1);
 
-                } else {
-                    mapColumnOccurrence.put(integer, 1);
+                    } else {
+                        mapColumnOccurrence.put(integer, 1);
+                    }
                 }
-            }
 
-            Collection<Integer> valuesOfHMap;
+                Collection<Integer> valuesOfHMap;
 
-            valuesOfHMap = mapColumnOccurrence.values();
-            Integer highOccurrences = Collections.max(valuesOfHMap);
+                valuesOfHMap = mapColumnOccurrence.values();
+                Integer highOccurrences = Collections.max(valuesOfHMap);
 
-            for (Entry<Integer, Integer> entry : mapColumnOccurrence.entrySet()) {
-                if (highOccurrences.equals(entry.getValue())) {
+                for (Entry<Integer, Integer> entry : mapColumnOccurrence.entrySet()) {
+                    if (highOccurrences.equals(entry.getValue())) {
 
-                    idealNumColumns = entry.getKey();
+                        idealNumColumns = entry.getKey();
+                    }
                 }
             }
         } catch (Exception error) {
