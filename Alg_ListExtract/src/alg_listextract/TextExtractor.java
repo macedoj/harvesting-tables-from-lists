@@ -33,6 +33,10 @@ public class TextExtractor extends FieldExtractor {
         return 0.1;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "Text_Expression";
