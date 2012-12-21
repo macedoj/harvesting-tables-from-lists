@@ -33,6 +33,10 @@ public class CurrencyValuesExtractor extends FieldExtractor {
         return 0.4;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "CurrencyValues_Expression";
