@@ -8,8 +8,14 @@ import alg_listextract.FieldCandidate;
 import java.util.ArrayList;
 
 /**
+ * This class is responsible for aligning records that contains less columns
+ * [with field candidates] than ideal.
  *
- * @author PC
+ * @since 14/12/2012 - Last change: 18/12/2012
+ * @version 0.2
+ * @author Juliano R. Macedo
+ * @link https://github.com/JulianoR/Extract-Tables-from-Lists
+ *
  */
 public class AlignShortRecord {
 
@@ -17,9 +23,9 @@ public class AlignShortRecord {
     }
 
     /**
-     * Criar um método que receba uma tipo de dado e um conjunto de tipos vindos
-     * de uma das colunas corretas, o seu retorno será uma pontuação que indique
-     * a semelhança do tipo com os tipos daquela coluna[correta].
+     * Criar um método que receba uma tipo de dado e um conjunto de tipos vindo
+     * de uma coluna correta, o seu retorno será uma pontuação que indique a
+     * semelhança do tipo com os tipos daquela coluna[correta].
      *
      * @param field the field for comparison
      * @param rowsCadidates the all candidates fields == idealNumColumn
@@ -63,8 +69,6 @@ public class AlignShortRecord {
                 s.addScoreNoArray(percent);
                 carregaInfos(arrayScores, field, j, percent, s);
 
-
-
                 /*if (repeticoes > maxRepeticoes) {
 
                  System.out.println("Repetição total: " + repeticoes);
@@ -86,6 +90,7 @@ public class AlignShortRecord {
     }
 
     /**
+     * Compute the percentage of similarity the field for the others fields.
      *
      * @param repeticoes number of occurrences
      * @param numLinhas number of line
@@ -98,21 +103,28 @@ public class AlignShortRecord {
 
     public void carregaInfos(ArrayList<ArrayList<Score>> arrayScores, String field, int numColumn, float percent, Score s) {
 
-        arrayScores.add(numColumn, s.obterArrayScores());
+        try {
+            arrayScores.add(numColumn, s.obterArrayScores());
+            System.out.println(arrayScores + " - ");
 
-        System.out.println(arrayScores + " - ");
+            /*  
+             //carregar as informações dentro da estrutura de classes.
+             Valor v = new Valor();
+             Coluna c = new Coluna();
+             Score s = new Score();
 
-        /*  
-         //carregar as informações dentro da estrutura de classes.
-         Valor v = new Valor();
-         Coluna c = new Coluna();
-         Score s = new Score();
+             c.criaColuna();
+             v.setValor(field);
+             v.defineScoreDoValor(percent, s, c);
 
-         c.criaColuna();
-         v.setValor(field);
-         v.defineScoreDoValor(percent, s, c);
-
-         c.exibirTabela();
-         */
+             c.exibirTabela();
+             */
+        } catch (Exception error) {
+            /**
+             * Show the StackTrace error [for debug]
+             */
+            error.printStackTrace();
+//            System.out.println("Exception: " + error);
+        }
     }
 }
