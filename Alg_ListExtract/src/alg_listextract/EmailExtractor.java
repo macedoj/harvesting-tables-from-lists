@@ -32,6 +32,10 @@ public class EmailExtractor extends FieldExtractor {
         return 0.8;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "Email_Expression";
