@@ -33,6 +33,10 @@ public class UrlsExtractor extends FieldExtractor {
         return 0.5;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "Urls_Expression";
