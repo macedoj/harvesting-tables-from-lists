@@ -5,8 +5,13 @@
 package file_handler;
 
 /**
+ * This class is responsible for set the directory infos.
  *
- * @author PC
+ * @since 17/12/2012 - Last change: 20/12/2012
+ * @version 0.2
+ * @author Juliano R. Macedo
+ * @link https://github.com/JulianoR/Extract-Tables-from-Lists
+ *
  */
 public class DirectoryConfig {
 
