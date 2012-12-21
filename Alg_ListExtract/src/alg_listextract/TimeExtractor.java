@@ -34,6 +34,10 @@ public class TimeExtractor extends FieldExtractor {
         return 0.7;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "Time_Expression";
