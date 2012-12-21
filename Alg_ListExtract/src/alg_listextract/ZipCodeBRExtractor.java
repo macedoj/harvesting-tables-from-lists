@@ -13,7 +13,7 @@ package alg_listextract;
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  * 
  */
-public class ZipCodeBREstractor extends FieldExtractor {
+public class ZipCodeBRExtractor extends FieldExtractor {
 
     /**
      * 
@@ -33,6 +33,10 @@ public class ZipCodeBREstractor extends FieldExtractor {
         return 0.9;
     }
 
+    /**
+     * 
+     * @return the name of expression
+     */
     @Override
     public String getNameExpression() {
         return "ZiCodeBR_Expression";
