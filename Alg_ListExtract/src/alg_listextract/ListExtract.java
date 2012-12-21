@@ -4,7 +4,7 @@
  */
 package alg_listextract;
 
-import html_tables.HTML_Tables_Generator;
+import html_tables.HTML_TablesGenerator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,12 +15,6 @@ import structure_aligning.AlignShortRecord;
 /**
  * This class is responsible for construction the engine of the extraction
  *
- * Algoritmo para separar as possíveis conlunas da tabla. Faz parte do conjunto
- * de algoritmos do artigo "Harvesting Relational Tables from Lists on the Web"
- *
- * Os algoritmos do ListExtract descritos aqui, estão presentes a partir da
- * página 04 do artigo.
- *
  * @since 15/07/2012 - Last change: 29/09/2012
  * @version 0.1
  * @author Juliano R.
@@ -29,7 +23,7 @@ import structure_aligning.AlignShortRecord;
  */
 public class ListExtract {
 
-    HTML_Tables_Generator htmltg;
+    HTML_TablesGenerator htmltg;
 
     public ListExtract() {
     }
@@ -49,7 +43,6 @@ public class ListExtract {
     public void split_Lines(String nameFile, ArrayList listSubSequen) {
 
         try {
-
             ArrayList numColum;
             numColum = new ArrayList();
             ArrayList<ArrayList<FieldCandidate>> rowsFQS = new ArrayList<>();
@@ -69,8 +62,7 @@ public class ListExtract {
             }
 
             int idealNumColumns = computeIdealNumColumns(numColum);
-
-            htmltg = new HTML_Tables_Generator(nameFile);
+            htmltg = new HTML_TablesGenerator(nameFile);
 
             for (int j = 0; j < rowsCadidates.size(); j++) {
 
@@ -91,7 +83,6 @@ public class ListExtract {
                         AlignShortRecord shortRecord = new AlignShortRecord();
                         shortRecord.pre_AlignShortRecord(selectedCandidates.get(i).getField(), rowsCadidates, idealNumColumns);
                     }
-
                     outputCandidates(selectedCandidates);
                 } else {
 
@@ -101,7 +92,6 @@ public class ListExtract {
 
             htmltg.tableGenerator();
         } catch (Exception error) {
-
             /**
              * Show the StackTrace error [for debug]
              */
@@ -111,9 +101,7 @@ public class ListExtract {
     }
 
     /**
-     * For greater organization.
-     *
-     * Method responsible for compute the FQS.
+     * For greater organization. Method responsible for compute the FQS.
      *
      * @param line
      * @return a list with fields candidates of the line
@@ -122,7 +110,6 @@ public class ListExtract {
     private ArrayList<FieldCandidate> computeFQS(String line) {
 
         ArrayList<FieldCandidate> listCandFields = new ArrayList<>();
-
         try {
 
             listCandFields = fieldQualityScore(line);
@@ -156,7 +143,6 @@ public class ListExtract {
             for (int posList = start; posList < candidates.size(); posList++) {
 
                 FieldCandidate candidate = candidates.get(posList);
-
                 boolean mustAdd = true;
 
                 for (int i = 0; i < selectedCandidates.size(); i++) {
@@ -164,7 +150,6 @@ public class ListExtract {
                     FieldCandidate selectedCandidate = selectedCandidates.get(i);
 
                     if (hasIntersection(candidate, selectedCandidate)) {
-
                         mustAdd = false;
                         break;
                     }
@@ -195,7 +180,6 @@ public class ListExtract {
             error.printStackTrace();
 //            System.out.println("Exception: " + error);
         }
-
         return selectedCandidates;
     }
 
@@ -208,11 +192,8 @@ public class ListExtract {
     private void outputCandidates(ArrayList<FieldCandidate> selectedCandidates) {
 
         try {
-
             ArrayList arrayRow = new ArrayList<>();
-
             FieldCandidateStartComparator sPosition = new FieldCandidateStartComparator();
-
             Collections.sort(selectedCandidates, sPosition);
 
             for (int x = 0; x < selectedCandidates.size(); x++) {
@@ -220,7 +201,6 @@ public class ListExtract {
                 arrayRow.add(selectedCandidates.get(x).getField());
                 System.out.print(selectedCandidates.get(x).getField() + " | ");
             }
-
             System.out.println("");
 
             htmltg.addingLineInTable(arrayRow);
@@ -257,17 +237,15 @@ public class ListExtract {
         ArrayList<FieldCandidate> candidatesFound = new ArrayList<FieldCandidate>();
 
         try {
-
             candidatesFound.addAll(new CurrencyValuesExtractor().extractFields(subSequences));
+            candidatesFound.addAll(new DateExtractor().extractFields(subSequences));
             candidatesFound.addAll(new EmailExtractor().extractFields(subSequences));
             candidatesFound.addAll(new PhoneFieldExtractor().extractFields(subSequences));
             candidatesFound.addAll(new TextExtractor().extractFields(subSequences));
             candidatesFound.addAll(new TimeExtractor().extractFields(subSequences));
             candidatesFound.addAll(new UrlsExtractor().extractFields(subSequences));
-            candidatesFound.addAll(new ZipCodeBREstractor().extractFields(subSequences));
+            candidatesFound.addAll(new ZipCodeBRExtractor().extractFields(subSequences));
             candidatesFound.addAll(new ZipCodeEUAExtractor().extractFields(subSequences));
-            candidatesFound.addAll(new DateExtractor().extractFields(subSequences));
-
 
         } catch (Exception error) {
             /**
@@ -280,10 +258,11 @@ public class ListExtract {
     }
 
     /**
+     * Find intersection between candidates.
      *
      * @param candidate
      * @param selectedCandidate
-     * @return
+     * @return 'true' if found intersection between candidates or 'false' case not.
      */
     private boolean hasIntersection(FieldCandidate candidate, FieldCandidate selectedCandidate) {
 
@@ -292,10 +271,11 @@ public class ListExtract {
     }
 
     /**
+     * Find intersection between candidates.
      *
      * @param pos
      * @param selectedCandidate
-     * @return
+     * @return 'true' if found intersection between candidates or 'false' case not.
      */
     private boolean hasIntersection(int pos, FieldCandidate selectedCandidate) {
 
@@ -328,14 +308,12 @@ public class ListExtract {
                     if (mapColumnOccurrence.containsKey(integer)) {
 
                         mapColumnOccurrence.put(integer, mapColumnOccurrence.get(integer) + 1);
-
                     } else {
                         mapColumnOccurrence.put(integer, 1);
                     }
                 }
 
                 Collection<Integer> valuesOfHMap;
-
                 valuesOfHMap = mapColumnOccurrence.values();
                 Integer highOccurrences = Collections.max(valuesOfHMap);
 
