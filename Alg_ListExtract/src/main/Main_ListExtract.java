@@ -18,11 +18,6 @@ import file_handler.FileHandler;
  */
 public class Main_ListExtract {
 
-    /**
-     * Main simples do algoritmo
-     *
-     * @param args
-     */
     public static void main(String args[]) {
 
         try {
