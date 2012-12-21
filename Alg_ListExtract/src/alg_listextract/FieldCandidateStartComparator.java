@@ -23,15 +23,13 @@ public class FieldCandidateStartComparator implements Comparator<FieldCandidate>
     /**
      * Um inteiro menor que zero se objeto atual for 'menor' que o recebido como
      * parâmetro.
-     *
      * Um inteiro maior que zero se objeto atual for 'maior' que o recebido como
      * parâmetro.
-     *
      * Zero se objetos forem iguais.
      *
      * @param fCandidate1
      * @param fCandidate2
-     * @return the result of comparator
+     * @return the result of comparator [1, -1 or 0]
      */
     @Override
     public int compare(FieldCandidate fCandidate1, FieldCandidate fCandidate2) {
