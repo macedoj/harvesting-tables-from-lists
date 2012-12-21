@@ -27,14 +27,12 @@ public class FileHandler {
     /**
      * Método responsável por listar e armazenar em um array de string os nomes
      * de todos os arquivos dentro do diretório previamente fornecido.
-     *
-     * @param directory
      */
-    public void listFileInDirectory(String directory) {
+    public void listFileInDirectory() {
 
         try {
             ListExtract listExtract = new ListExtract();
-            File file = new File(directory);
+            File file = new File(DirectoryConfig.getInstance().getExtractDirectory());
 
             // Se o diretório existir entra no if. 
             if (file.exists() && file.isDirectory()) {
@@ -63,10 +61,8 @@ public class FileHandler {
                     } else {
                         /**
                          * This file is empty.
-                         *
-                         * O arquivo aberto esta vazio, por isso não se faz
-                         * nada.
                          */
+                        System.out.println("The file '" + fName + "' is empty!");
                     }
                     //Call the Garbage Collector
                     System.gc();
@@ -94,10 +90,10 @@ public class FileHandler {
             ListExtract listExtract = new ListExtract();
 
             @SuppressWarnings("UnusedAssignment")
-            ArrayList listIsEmpty = new ArrayList();
-            listIsEmpty = readingFiles(fileName);
+            ArrayList listRows = new ArrayList();
+            listRows = readingFiles(fileName);
 
-            if (!listIsEmpty.isEmpty()) {
+            if (!listRows.isEmpty()) {
 
                 listExtract.split_Lines(fileName, readingFiles(fileName));
             } else {
@@ -135,7 +131,7 @@ public class FileHandler {
              * Abre e carrega no buffer o arquivo cujo nome foi recebido por
              * parâmetro(nameFile).
              */
-            BufferedReader readFile = new BufferedReader(new FileReader("files\\lists\\" + nameFile));
+            BufferedReader readFile = new BufferedReader(new FileReader(DirectoryConfig.getInstance().getExtractDirectory() + nameFile));
 
             notEmpty = readFile.ready();
             /**
@@ -180,16 +176,16 @@ public class FileHandler {
      *
      * @param nameOutFile Nome do arquivo que esta sendo manipulado
      * @param cabecalho cabecalho html
-     * @param fimPage fim da estruturação html da página
+     * @param endPage fim da estruturação html da página
      */
-    public void newOutFile(String nameOutFile, String cabecalho, String row, String fimPage) {
+    public void newOutFile(String nameOutFile, String cabecalho, String row, String endPage) { 
 
         String nameNewFile = "";
 
         try {
 
             // Cria um novo arquivo no diretório de saída especificado.
-            File file = new File("files\\outLists", "TABELA_" + nameOutFile + ".html");
+            File file = new File(DirectoryConfig.getInstance().getOutDirectory(), "TABELA_" + nameOutFile + ".html");
             file.createNewFile();
 
             // Recupera o nome do arquivo criado.
@@ -207,22 +203,22 @@ public class FileHandler {
         }
 
         // Chama o método que escreve a estrutura já filtrada no arquivo txt de saída.
-        writeOutFile(nameNewFile, cabecalho, row, fimPage);
+        writeOutFile(nameNewFile, cabecalho, row, endPage);
     }
 
     /**
      * Método responsável por gravar os dados filtrados no arquivo de saída.
-     *
      * @param nameOutFile Nome do arquivo que esta sendo manipulado
      * @param cabecalho cabecalho html
-     * @param fimPage fim da estruturação html da página
+     * @param row Linha que contem os dados
+     * @param fimPage fim da estruturação html da página  
      */
     @SuppressWarnings({"ConvertToTryWithResources"})
     public void writeOutFile(String nameOutFile, String cabecalho, String row, String fimPage) {
 
         try {
 
-            FileWriter fstream = new FileWriter("files\\outLists\\" + nameOutFile + "");
+            FileWriter fstream = new FileWriter(DirectoryConfig.getInstance().getOutDirectory() + nameOutFile + "");
 
             BufferedWriter out = new BufferedWriter(fstream);
 
