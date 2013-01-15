@@ -23,7 +23,7 @@ public class DirectoryConfig {
     }
 
     /**
-     * 
+     * @see This is Singleton method!
      * @return the instance of this class
      */
     public static DirectoryConfig getInstance() {

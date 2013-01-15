@@ -4,6 +4,15 @@
  */
 package alg_listextract;
 
+import regex_extractor.UrlsExtractor;
+import regex_extractor.DateExtractor;
+import regex_extractor.PhoneFieldExtractor;
+import regex_extractor.TextExtractor;
+import regex_extractor.ZipCodeEUAExtractor;
+import regex_extractor.TimeExtractor;
+import regex_extractor.CurrencyValuesExtractor;
+import regex_extractor.EmailExtractor;
+import regex_extractor.ZipCodeBRExtractor;
 import html_tables.HTML_TablesGenerator;
 import java.util.ArrayList;
 import java.util.Collection;
