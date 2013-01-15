@@ -18,6 +18,7 @@ import file_handler.FileHandler;
  */
 public class Main_ListExtract {
 
+    @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String args[]) {
 
         try {
@@ -37,6 +38,7 @@ public class Main_ListExtract {
              */
             FileHandler fileHandler = new FileHandler();
             fileHandler.listFileInDirectory();
+
 
         } catch (Exception error) {
             /**
