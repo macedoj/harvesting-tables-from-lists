@@ -4,37 +4,29 @@
  */
 package structure_aligning;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author PC
  */
 public class Score {
 
+    private static Score objScore;
     private double score;
-    private ArrayList arrayScores;
 
     public Score() {
-
-        arrayScores = new ArrayList();
     }
-    
-    /**
-     * 
-     * @param score 
-     */
-    public void addScoreNoArray(double score) {
-        arrayScores.add(score);
 
-    }
     /**
-     * 
-     * @return arrayScores
+     * @see This is Singleton method!
+     * @return the instance of this class
      */
-    public ArrayList<Score> obterArrayScores() {
+    public static Score getInstance() {
 
-        return arrayScores;
+        if (objScore == null) {
+            
+            objScore = new Score();
+        }
+        return objScore;
     }
 
     /**

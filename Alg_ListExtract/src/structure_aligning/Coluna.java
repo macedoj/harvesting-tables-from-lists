@@ -12,49 +12,23 @@ import java.util.ArrayList;
  */
 public class Coluna {
 
-    private ArrayList<ArrayList<Score>> coluna;
+    private String nome;
+    private ArrayList<Double> scores = new ArrayList<Double>();
 
-    public void criaColuna() {
-
-        coluna = new ArrayList<>();
+    public void addScore() throws Exception{
+        
+        scores.add(Score.getInstance().getScore());
     }
 
-    /**
-     *
-     * @param numColuna the number of column
-     * @param s the object of the class Score
-     */
-    public void addColuna(Score s) {
-        //Verificar a necessidade de passar  o número da coluna para a insersão.
-        coluna.add(s.obterArrayScores());
+    public ArrayList getColuna() {
+        return scores;
     }
 
-    /**
-     *
-     * @param index of the column
-     * @return the column
-     */
-    public ArrayList obterColuna(int index) {
-
-        return coluna.get(index);
+    public String getNome() {
+        return nome;
     }
 
-    public void exibirTabela() {
-
-        for (int j = 0; j < coluna.size(); j++) {
-
-            System.out.print(coluna.get(j).get(j)+" - ");
-        }
-    }
-
-    /**
-     *
-     * @param index of the column
-     * @return the size of column
-     */
-    public int tamColuna(int index) {
-
-        return coluna.get(index).size();
-
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

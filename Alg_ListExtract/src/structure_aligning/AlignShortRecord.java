@@ -6,6 +6,9 @@ package structure_aligning;
 
 import alg_listextract.FieldCandidate;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import regex_extractor.TextExtractor;
 
 /**
  * This class is responsible for aligning records that contains less columns
@@ -18,6 +21,9 @@ import java.util.ArrayList;
  *
  */
 public class AlignShortRecord {
+
+    Tabela tabela = new Tabela();
+    //private FieldExtractor objFieldExt;
 
     public AlignShortRecord() {
     }
@@ -35,51 +41,61 @@ public class AlignShortRecord {
     public void pre_AlignShortRecord(String field, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn) {
 
         ArrayList<ArrayList<Score>> arrayScores;
-        int numLinhas = rowsCadidates.size();
+
+        Valor valor = new Valor();
+        valor.setValor(field);
+        tabela.addValor(valor);
 
         try {
             arrayScores = new ArrayList<>(idealNumColumn);
 
             for (int j = 0; j < idealNumColumn; j++) {
 
-                int repeticoes = 0;
-                float percent = 0;
+                Coluna objColumn = new Coluna();
+                objColumn.setNome(String.valueOf(j));
+                valor.addColuna(objColumn);
 
-                for (int i = 0; i < rowsCadidates.size(); i++) {
+                computeScoreEquals(field, objColumn, rowsCadidates, idealNumColumn, j);
+            }
+        } catch (Exception error) {
+            /**
+             * Show the StackTrace error [for debug]
+             */
+            error.printStackTrace();
+//            System.out.println("Exception: " + error);
+        }
+    }
 
-                    if (rowsCadidates.get(i).size() == idealNumColumn) {
+    private void computeScoreEquals(String field, Coluna objColumn, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn, int posiColumn) {
+        int repeticoes = 0;
+        float percent = 0;
+        int numLinhas = rowsCadidates.size();
+        try {
 
-                        String fieldCorrectColumn = rowsCadidates.get(i).get(j).getField();
+            for (int i = 0; i < rowsCadidates.size(); i++) {
 
-                        if (field.equals(fieldCorrectColumn)) {
+                if (rowsCadidates.get(i).size() == idealNumColumn) {
 
-                            repeticoes++;
-                            System.out.println(field + " == " + fieldCorrectColumn + " < Num coluna:" + j);
-                        }
+                    String fieldCorrectColumn = rowsCadidates.get(i).get(posiColumn).getField();
+
+                    if (field.equals(fieldCorrectColumn)) {
+                        extractField(field);
+                        repeticoes++;
+                        System.out.println(field + " == " + fieldCorrectColumn + " < Num coluna:" + objColumn.getNome());
                     }
                 }
-
-                if (repeticoes > 0) {
-
-                    percent = (computePercentage(repeticoes, numLinhas));
-                    System.out.println(numLinhas + " | " + repeticoes + " \nColuna: " + j + " - Igualidaddes: " + percent + "%");
-                }
-
-                Score s = new Score();
-                s.addScoreNoArray(percent);
-                carregaInfos(arrayScores, field, j, percent, s);
-
-                /*if (repeticoes > maxRepeticoes) {
-
-                 System.out.println("Repetição total: " + repeticoes);
-                 posicaoDaColuna = j;
-                 maxRepeticoes = repeticoes;
-                 }
-                 float scoreAtual = (((float) maxRepeticoes) / numLinhas);
-                 System.out.println("Field: " + field);
-                 System.out.println("Maior Score: " + scoreAtual + " - Coluna: " + posicaoDaColuna);
-                 */
             }
+
+            if (repeticoes > 0) {
+
+                percent = (computePercentage(repeticoes, numLinhas));
+                System.out.println(numLinhas + " | " + repeticoes + " \nColuna: " + objColumn.getNome() + " - Igualidaddes: " + percent + "%");
+            }
+
+            // Score s = new Score();
+            Score.getInstance().setScore(percent);
+            objColumn.addScore();
+
         } catch (Exception error) {
             /**
              * Show the StackTrace error [for debug]
@@ -98,33 +114,32 @@ public class AlignShortRecord {
      */
     public float computePercentage(int repeticoes, int numLinhas) {
 
-        return ((float) (repeticoes * 100) / numLinhas);
+        return ((float) ((repeticoes * 100) / numLinhas) / 100);
     }
 
-    public void carregaInfos(ArrayList<ArrayList<Score>> arrayScores, String field, int numColumn, float percent, Score s) {
+    /**
+     * Para a correta utilização dessa classe é necessário implementar a
+     * estrutura de extends da classe original para poder utilizar as funções de
+     * sobreposição aos métodos e para que possamos executar de modo dinâmico as
+     * expressões regulares.
+     * Construção da classe abstrata.
+     *
+     * @param field
+     * @throws Exception
+     */
+    private void extractField(String field) throws Exception {
+        //Não funciona com mais de um objeto.
+        TextExtractor cve = new TextExtractor();
 
-        try {
-            arrayScores.add(numColumn, s.obterArrayScores());
-            System.out.println(arrayScores + " - ");
+        String nameExpression;
+        //Não funciona pelo obvio, não é possivel fazer a escolha do objeto de forma dinâmica.
+        Pattern patNumVal = Pattern.compile(cve.getExpression());
+        Matcher matNumVal = patNumVal.matcher(field);
 
-            /*  
-             //carregar as informações dentro da estrutura de classes.
-             Valor v = new Valor();
-             Coluna c = new Coluna();
-             Score s = new Score();
+        while (matNumVal.find()) {
 
-             c.criaColuna();
-             v.setValor(field);
-             v.defineScoreDoValor(percent, s, c);
-
-             c.exibirTabela();
-             */
-        } catch (Exception error) {
-            /**
-             * Show the StackTrace error [for debug]
-             */
-            error.printStackTrace();
-//            System.out.println("Exception: " + error);
+            nameExpression = matNumVal.group();
+            System.out.println("- " + nameExpression);
         }
     }
 }

@@ -4,6 +4,8 @@
  */
 package structure_aligning;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author PC
@@ -12,19 +14,17 @@ public class Valor {
 
     private String valor;
 
-    public void defineScoreDoValor(double score, Score s, Coluna c) {
-
-        s.setScore(score);
-        s.addScoreNoArray(s.getScore());
-
-        addScoreNaColuna(c, s);
+    ArrayList<Coluna> colunas = new ArrayList<Coluna>();
+    
+    /**
+     * 
+     * @param c 
+     */
+    public void addColuna(Coluna c)
+    {
+        colunas.add(c);
     }
-
-    private void addScoreNaColuna(Coluna c, Score s) {
-
-        c.addColuna(s);
-    }
-
+    
     /**
      * @return the valor
      */
