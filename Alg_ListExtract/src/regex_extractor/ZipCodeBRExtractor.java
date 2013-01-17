@@ -5,6 +5,7 @@
 package regex_extractor;
 
 import alg_listextract.FieldExtractor;
+import alg_listextract.FieldExtractor;
 
 /**
  * This class recognizes the type 'ZipCode-BR'.
