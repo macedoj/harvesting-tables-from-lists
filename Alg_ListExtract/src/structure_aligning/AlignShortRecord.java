@@ -5,10 +5,20 @@
 package structure_aligning;
 
 import alg_listextract.FieldCandidate;
+import alg_listextract.FieldExtractor;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import regex_extractor.CurrencyValuesExtractor;
+import regex_extractor.DateExtractor;
+import regex_extractor.EmailExtractor;
+import regex_extractor.PhoneFieldExtractor;
 import regex_extractor.TextExtractor;
+import regex_extractor.TimeExtractor;
+import regex_extractor.UrlsExtractor;
+import regex_extractor.ZipCodeBRExtractor;
+import regex_extractor.ZipCodeEUAExtractor;
 
 /**
  * This class is responsible for aligning records that contains less columns
@@ -23,6 +33,7 @@ import regex_extractor.TextExtractor;
 public class AlignShortRecord {
 
     Tabela tabela = new Tabela();
+    List<FieldExtractor> list;
     //private FieldExtractor objFieldExt;
 
     public AlignShortRecord() {
@@ -66,6 +77,7 @@ public class AlignShortRecord {
         }
     }
 
+    @SuppressWarnings("CallToThreadDumpStack")
     private void computeScoreEquals(String field, Coluna objColumn, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn, int posiColumn) {
         int repeticoes = 0;
         float percent = 0;
@@ -79,6 +91,7 @@ public class AlignShortRecord {
                     String fieldCorrectColumn = rowsCadidates.get(i).get(posiColumn).getField();
 
                     if (field.equals(fieldCorrectColumn)) {
+                        objectExtractors();
                         extractField(field);
                         repeticoes++;
                         System.out.println(field + " == " + fieldCorrectColumn + " < Num coluna:" + objColumn.getNome());
@@ -105,6 +118,22 @@ public class AlignShortRecord {
         }
     }
 
+    public void objectExtractors() {
+        list = new ArrayList<>();
+
+        list.add(new CurrencyValuesExtractor());
+        list.add(new DateExtractor());
+        list.add(new EmailExtractor());
+        list.add(new PhoneFieldExtractor());
+        list.add(new TextExtractor());
+        list.add(new TimeExtractor());
+        list.add(new UrlsExtractor());
+        list.add(new ZipCodeBRExtractor());
+        list.add(new ZipCodeEUAExtractor());
+
+        //return list;
+    }
+
     /**
      * Compute the percentage of similarity the field for the others fields.
      *
@@ -121,25 +150,25 @@ public class AlignShortRecord {
      * Para a correta utilização dessa classe é necessário implementar a
      * estrutura de extends da classe original para poder utilizar as funções de
      * sobreposição aos métodos e para que possamos executar de modo dinâmico as
-     * expressões regulares.
-     * Construção da classe abstrata.
+     * expressões regulares. Construção da classe abstrata.
      *
      * @param field
      * @throws Exception
      */
     private void extractField(String field) throws Exception {
-        //Não funciona com mais de um objeto.
-        TextExtractor cve = new TextExtractor();
 
-        String nameExpression;
-        //Não funciona pelo obvio, não é possivel fazer a escolha do objeto de forma dinâmica.
-        Pattern patNumVal = Pattern.compile(cve.getExpression());
-        Matcher matNumVal = patNumVal.matcher(field);
+        for (int j = 0; j < list.size(); j++) {
 
-        while (matNumVal.find()) {
+            String nameExpression;
 
-            nameExpression = matNumVal.group();
-            System.out.println("- " + nameExpression);
+            Pattern patNumVal = Pattern.compile(list.get(j).getExpression());
+            Matcher matNumVal = patNumVal.matcher(field);
+
+            while (matNumVal.find()) {
+
+                nameExpression = matNumVal.group();
+                System.out.println("- " + nameExpression);
+            }
         }
     }
 }
