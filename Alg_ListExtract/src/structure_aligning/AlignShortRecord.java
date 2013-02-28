@@ -5,170 +5,138 @@
 package structure_aligning;
 
 import alg_listextract.FieldCandidate;
-import alg_listextract.FieldExtractor;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import regex_extractor.CurrencyValuesExtractor;
-import regex_extractor.DateExtractor;
-import regex_extractor.EmailExtractor;
-import regex_extractor.PhoneFieldExtractor;
-import regex_extractor.TextExtractor;
-import regex_extractor.TimeExtractor;
-import regex_extractor.UrlsExtractor;
-import regex_extractor.ZipCodeBRExtractor;
-import regex_extractor.ZipCodeEUAExtractor;
 
 /**
  * This class is responsible for aligning records that contains less columns
  * [with field candidates] than ideal.
  *
- * @since 14/12/2012 - Last change: 18/12/2012
- * @version 0.2
+ * @since 06/02/2013 - Last change: 14/02/2013
+ * @version 0.1
  * @author Juliano R. Macedo
  * @link https://github.com/JulianoR/Extract-Tables-from-Lists
  *
  */
 public class AlignShortRecord {
 
-    Tabela tabela = new Tabela();
-    List<FieldExtractor> list;
-    //private FieldExtractor objFieldExt;
+    private static AlignShortRecord objAlgnSR;
 
     public AlignShortRecord() {
     }
 
     /**
-     * Criar um método que receba uma tipo de dado e um conjunto de tipos vindo
-     * de uma coluna correta, o seu retorno será uma pontuação que indique a
-     * semelhança do tipo com os tipos daquela coluna[correta].
+     * Depois da última atualização da lasse, onde o algoritmo de Nedleman foi
+     * removido, não é mais necessário esse método singleton.
      *
-     * @param field the field for comparison
-     * @param rowsCadidates the all candidates fields == idealNumColumn
-     * @param idealNumColumn the number of ideal columns
+     * @see This is Singleton method of class AlignShortRecord!
+     * @return the instance of this class
      */
-    @SuppressWarnings("CallToThreadDumpStack")
-    public void pre_AlignShortRecord(String field, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn) {
+    public static AlignShortRecord getInstance() {
 
-        ArrayList<ArrayList<Score>> arrayScores;
-
-        Valor valor = new Valor();
-        valor.setValor(field);
-        tabela.addValor(valor);
-
-        try {
-            arrayScores = new ArrayList<>(idealNumColumn);
-
-            for (int j = 0; j < idealNumColumn; j++) {
-
-                Coluna objColumn = new Coluna();
-                objColumn.setNome(String.valueOf(j));
-                valor.addColuna(objColumn);
-
-                computeScoreEquals(field, objColumn, rowsCadidates, idealNumColumn, j);
-            }
-        } catch (Exception error) {
-            /**
-             * Show the StackTrace error [for debug]
-             */
-            error.printStackTrace();
-//            System.out.println("Exception: " + error);
+        if (objAlgnSR == null) {
+            objAlgnSR = new AlignShortRecord();
         }
+        return objAlgnSR;
     }
 
-    @SuppressWarnings("CallToThreadDumpStack")
-    private void computeScoreEquals(String field, Coluna objColumn, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn, int posiColumn) {
-        int repeticoes = 0;
-        float percent = 0;
-        int numLinhas = rowsCadidates.size();
-        try {
+    /**
+     *
+     * @param shortRecord
+     * @param rowsCadidates
+     * @param idealNumColumn
+     */
+    public void geraMatrizScors(ArrayList<FieldCandidate> shortRecord, ArrayList<ArrayList<FieldCandidate>> rowsCadidates, int idealNumColumn) {
 
-            for (int i = 0; i < rowsCadidates.size(); i++) {
+        ArrayList<ArrayList<FieldCandidate>> correctColumns = new ArrayList<>();
+        
+        //Carregando a lista apenas com as colunas corretas (=idealNumColumn)
+        for (int i = 0; i <rowsCadidates.size(); i++) {
+            
+            if(rowsCadidates.get(i).size() == idealNumColumn){
+            correctColumns.add(rowsCadidates.get(i));
+            }
+            
+        }
+
+        //Dimensão 0, são os valores, na dimensao 1, são as colunas
+        double[][] matrizScors = new double[shortRecord.size()][idealNumColumn];
+        double percentagem = 0;
+
+        for (int j = 0; j < shortRecord.size(); j++) {
+
+            for (int i = 0; i < idealNumColumn; i++) {
 
                 if (rowsCadidates.get(i).size() == idealNumColumn) {
 
-                    String fieldCorrectColumn = rowsCadidates.get(i).get(posiColumn).getField();
+                    int soma = 0;
+                    int tamColuna = 0;
+                    tamColuna = rowsCadidates.size(); // Número de Linhas de cada coluna
 
-                    if (field.equals(fieldCorrectColumn)) {
-                        objectExtractors();
-                        extractField(field);
-                        repeticoes++;
-                        System.out.println(field + " == " + fieldCorrectColumn + " < Num coluna:" + objColumn.getNome());
+                    for (int t = 0; t < rowsCadidates.size(); t++) {
+
+                        if (rowsCadidates.get(i).size() == idealNumColumn) {
+                            //Recebe o retor binário depois do cálculo.
+                            soma += funcaoCompara(shortRecord.get(j).getField(), rowsCadidates.get(t).get(i).getField());
+                            /// No "rowsCadidates.get(t).get(i).getField()" o get(i) gera exceção dentro de linhas 
+                            // que contem menor quantidade de valores. Gerar a tabela com as linhas que contem os numeros de campos validos.
+                        }
                     }
+                    /**
+                     * Olhar o excel para realizar as alterações.
+                     */
+
+                    percentagem = computePercentage(soma, tamColuna);
+                    matrizScors[j][i] = percentagem;
                 }
             }
-
-            if (repeticoes > 0) {
-
-                percent = (computePercentage(repeticoes, numLinhas));
-                System.out.println(numLinhas + " | " + repeticoes + " \nColuna: " + objColumn.getNome() + " - Igualidaddes: " + percent + "%");
-            }
-
-            // Score s = new Score();
-            Score.getInstance().setScore(percent);
-            objColumn.addScore();
-
-        } catch (Exception error) {
-            /**
-             * Show the StackTrace error [for debug]
-             */
-            error.printStackTrace();
-//            System.out.println("Exception: " + error);
         }
+        System.out.println("------");
+         printaMatriz(matrizScors);
     }
 
-    public void objectExtractors() {
-        list = new ArrayList<>();
+    /**
+     *
+     * @param campo
+     * @param campoDaColuna
+     * @return
+     */
+    private int funcaoCompara(String campo, String campoDaColuna) {
 
-        list.add(new CurrencyValuesExtractor());
-        list.add(new DateExtractor());
-        list.add(new EmailExtractor());
-        list.add(new PhoneFieldExtractor());
-        list.add(new TextExtractor());
-        list.add(new TimeExtractor());
-        list.add(new UrlsExtractor());
-        list.add(new ZipCodeBRExtractor());
-        list.add(new ZipCodeEUAExtractor());
+        int porcentagemComparacao = 0;
 
-        //return list;
+        if (campo.equals(campoDaColuna)) {
+
+            porcentagemComparacao = 1;
+            return porcentagemComparacao;
+        } else {
+            return porcentagemComparacao;
+        }
     }
 
     /**
      * Compute the percentage of similarity the field for the others fields.
      *
-     * @param repeticoes number of occurrences
-     * @param numLinhas number of line
+     * @param soma
+     * @param tamColuna
      * @return the percentage of equals fields.
      */
-    public float computePercentage(int repeticoes, int numLinhas) {
+    private double computePercentage(int soma, int tamColuna) {
 
-        return ((float) ((repeticoes * 100) / numLinhas) / 100);
+        return ((double) ((soma * 100) / tamColuna));
     }
 
-    /**
-     * Para a correta utilização dessa classe é necessário implementar a
-     * estrutura de extends da classe original para poder utilizar as funções de
-     * sobreposição aos métodos e para que possamos executar de modo dinâmico as
-     * expressões regulares. Construção da classe abstrata.
-     *
-     * @param field
-     * @throws Exception
-     */
-    private void extractField(String field) throws Exception {
+    private void printaMatriz(double[][] matrizScors) {
 
-        for (int j = 0; j < list.size(); j++) {
+        for (int j = 0; j < 4; j++) {
+            int t = 0;
+            for (int i = 0; i < 5; i++) {
 
-            String nameExpression;
-
-            Pattern patNumVal = Pattern.compile(list.get(j).getExpression());
-            Matcher matNumVal = patNumVal.matcher(field);
-
-            while (matNumVal.find()) {
-
-                nameExpression = matNumVal.group();
-                System.out.println("- " + nameExpression);
+                if (t <= 4) {
+                    System.out.print(matrizScors[j][i] + " | ");
+                    t++;
+                }
             }
+            System.out.println("");
         }
     }
 }

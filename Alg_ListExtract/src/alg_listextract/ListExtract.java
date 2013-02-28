@@ -75,7 +75,7 @@ public class ListExtract {
 
             for (int j = 0; j < rowsCadidates.size(); j++) {
 
-                System.out.println("**********************************************************");
+              //  System.out.println("**********************************************************");
                 ArrayList<FieldCandidate> selectedCandidates = rowsCadidates.get(j);
 
                 if (selectedCandidates.size() > idealNumColumns) {
@@ -87,19 +87,18 @@ public class ListExtract {
 
                 } else if (selectedCandidates.size() < idealNumColumns) {
 
-                    for (int i = 0; i < rowsCadidates.get(j).size(); i++) {
+                   // for (int i = 0; i < rowsCadidates.get(j).size(); i++) {
 
-                        AlignShortRecord shortRecord = new AlignShortRecord();
-                        shortRecord.pre_AlignShortRecord(selectedCandidates.get(i).getField(), rowsCadidates, idealNumColumns);
-                    }
-                    outputCandidates(selectedCandidates);
+                        AlignShortRecord.getInstance().geraMatrizScors(selectedCandidates, rowsCadidates, idealNumColumns);
+                   // }
+                   // outputCandidates(selectedCandidates);
                 } else {
 
-                    outputCandidates(selectedCandidates);
+                 //   outputCandidates(selectedCandidates);
                 }
             }
 
-            htmltg.tableGenerator();
+            //htmltg.tableGenerator();
         } catch (Exception error) {
             /**
              * Show the StackTrace error [for debug]
