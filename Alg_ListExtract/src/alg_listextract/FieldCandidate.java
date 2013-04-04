@@ -24,7 +24,7 @@ public class FieldCandidate implements Comparable<FieldCandidate> {
 
     /**
      * 
-     * @return 
+     * @return expressCorrespon
      */
     public String getExpressCorrespon() {
         return expressCorrespon;

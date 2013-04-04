@@ -15,15 +15,19 @@ package file_handler;
  */
 public class DirectoryConfig {
 
+    private static DirectoryConfig dataDirectory = null;
     private String extractDirectory;
     private String outDirectory;
-    private static DirectoryConfig dataDirectory;
 
+    /**
+     * Don't let anyone instantiate this class.
+     */
     private DirectoryConfig() {
     }
 
     /**
-     * @see This is Singleton method!
+     * This is Singleton method!
+     *
      * @return the instance of this class
      */
     public static DirectoryConfig getInstance() {

@@ -23,7 +23,6 @@ public class FileConfig {
      * @param rowData data of the row
      */
     public void constructionRow(String rowData) {
-
         setRowFile((getRowFile()) + rowData);
     }
 

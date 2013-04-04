@@ -25,7 +25,6 @@ public class HTML_TablesGenerator extends FileConfig {
      * @param nameOfFile file name manipulated now
      */
     public HTML_TablesGenerator(String nameOfFile) {
-
         setNameFile(nameOfFile);
         String startRow = "";
         setRowFile(startRow);
@@ -36,8 +35,8 @@ public class HTML_TablesGenerator extends FileConfig {
      *
      * @param arrayLines array contains lines of the file
      */
+    @SuppressWarnings("CallToThreadDumpStack")
     public void addingLineInTable(ArrayList arrayLines) {
-
         try {
             String startRow = "<tr>";
             String endRow = "</tr> \n";
@@ -67,8 +66,8 @@ public class HTML_TablesGenerator extends FileConfig {
      * linguagem de marcação HTML, trata-se de uma construção rustica de um
      * tabela HTML para esta receber os valores vindos da lista.
      */
+    @SuppressWarnings("CallToThreadDumpStack")
     public void tableGenerator() {
-
         try {
             String cabecalho = "<!DOCTYPE HTML PUBLIC " + "-//W3C//DTD HTML 4.01//EN" + "http://www.w3.org/TR/html4/strict.dtd" + ">"
                     + "<html lang=" + "pt-br" + ">" + "<head>" + " <meta http-equiv=" + "content-type" + " content=" + "text/html; charset=utf-8" + ">"

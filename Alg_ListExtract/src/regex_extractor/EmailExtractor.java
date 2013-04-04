@@ -31,11 +31,11 @@ public class EmailExtractor extends FieldExtractor {
      */
     @Override
     public double getScore() {
-        return 0.8;
+        return 0.85;
     }
 
     /**
-     * 
+     *
      * @return the name of expression
      */
     @Override

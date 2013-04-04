@@ -18,7 +18,7 @@ import alg_listextract.FieldExtractor;
 public class CurrencyValuesExtractor extends FieldExtractor {
 
     /**
-     * 
+     *
      * @return the extracted Currency Value
      */
     @Override
@@ -27,16 +27,16 @@ public class CurrencyValuesExtractor extends FieldExtractor {
     }
 
     /**
-     * 
+     *
      * @return the score of Currency Value
      */
     @Override
     public double getScore() {
-        return 0.4;
+        return 0.2;
     }
 
     /**
-     * 
+     *
      * @return the name of expression
      */
     @Override
