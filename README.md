@@ -1,7 +1,11 @@
-﻿#Extract-Tables-from-Lists
+﻿#harvesting-tables-from-lists
 
-This kit of algorithms is based in article 'Harvesting Relational Tables from List on the Web', 
-but the engineering and code design it's of my authorship.
+Algorithm based on the paper: Harvesting Relational Tables from List on the Web.
+
+The solution at this moment is not complete, because the last phase not implemented yet.
+
+
+
 
 ## License information
 
